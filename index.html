@@ -1237,6 +1237,7 @@
       margin-top: 2px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -1567,6 +1568,518 @@
       background: linear-gradient(150deg, #1a0028, #0a0a1a);
     }
 
+    /* ══ PREMIUM PLANS POPUP ══ */
+    .premium-trigger {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 4px 15px var(--primary-glow);
+      transition: all 0.2s;
+    }
+
+    .plus-trigger {
+      position: absolute;
+      top: 14px;
+      right: 56px;
+      /* Positioned left of premium icon */
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.2s;
+    }
+
+    .plus-trigger:active {
+      transform: scale(0.9);
+    }
+
+    .plus-trigger:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
+      box-shadow: 0 0 10px var(--primary-glow);
+    }
+
+    /* ══ UPLOAD PAGE ══ */
+    .upload-container {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .upload-dropzone {
+      width: 100%;
+      height: 180px;
+      border: 2px dashed rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .upload-dropzone:hover {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .upload-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    .form-input,
+    .form-textarea {
+      background: #111111;
+      border: 1.5px solid #262626;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: white;
+      transition: border-color 0.3s;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-textarea {
+      min-height: 120px;
+      resize: none;
+      line-height: 1.6;
+    }
+
+    .category-chips-form {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      scrollbar-width: none;
+    }
+
+    .category-chips-form::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fchip-form {
+      padding: 8px 16px;
+      background: #171717;
+      border: 1px solid #262626;
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .fchip-form.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .upload-submit-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 16px;
+      background: var(--accent-gradient);
+      border-radius: 16px;
+      border: none;
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px var(--primary-glow);
+      transition: all 0.3s;
+    }
+
+    .upload-submit-btn:active {
+      transform: scale(0.96);
+    }
+
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000000;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      /* Center content vertically */
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .popup-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Icon Stack */
+    .icon-stack {
+      position: relative;
+      width: 140px;
+      height: 100px;
+      margin: 20px 0 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .stack-item {
+      position: absolute;
+      width: 75px;
+      height: 75px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .si-1 {
+      background: #e0f2fe;
+      left: 0;
+      transform: rotate(-12deg);
+      z-index: 1;
+    }
+
+    .si-2 {
+      background: #fef3c7;
+      left: 32px;
+      transform: scale(1.15);
+      z-index: 3;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .si-3 {
+      background: #dcfce7;
+      left: 64px;
+      transform: rotate(12deg);
+      z-index: 2;
+    }
+
+
+    .close-circle {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 1010;
+    }
+
+    .close-circle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--secondary);
+      box-shadow: 0 0 15px var(--secondary-glow);
+    }
+
+    .close-circle:active {
+      transform: scale(0.9);
+    }
+
+    .benefit-list {
+      width: 100%;
+      max-width: 320px;
+      margin: 20px 0 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .benefit-check {
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    /* Price Toggles */
+    .price-toggles {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .toggle-card {
+      flex: 1;
+      background: #171717;
+      border: 1.5px solid #262626;
+      border-radius: 18px;
+      padding: 16px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .toggle-card.active {
+      border-color: #22c55e;
+      /* Green accent as in image */
+      background: #0a0a0a;
+    }
+
+    .toggle-card .t-label {
+      font-size: 10px;
+      color: #737373;
+      margin-bottom: 4px;
+    }
+
+    .toggle-card .t-price {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .toggle-card .t-sub {
+      font-size: 9px;
+      color: #525252;
+      margin-top: 2px;
+    }
+
+    .toggle-badge {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: #000;
+      font-size: 8px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    /* CTA Button */
+    .master-cta {
+      width: 100%;
+      max-width: 320px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      padding: 18px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(29, 78, 216, 0.4);
+      transition: all 0.3s;
+      margin-bottom: 16px;
+      /* Reduced margin */
+    }
+
+    .master-cta:active {
+      transform: scale(0.96);
+    }
+
+    .popup-footer-text {
+      font-size: 11px;
+      color: #737373;
+      margin-bottom: 12px;
+      /* Reduced margin */
+      text-align: center;
+    }
+
+    .popup-footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .p-link {
+      color: #525252;
+      font-size: 11px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .popup-overlay.active .plan-card {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .popup-overlay.active .plan-card:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    .popup-overlay.active .plan-card:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+
+    .popup-overlay.active .plan-card:nth-child(3) {
+      transition-delay: 0.3s;
+    }
+
+    .popup-overlay.active .plan-card:nth-child(4) {
+      transition-delay: 0.4s;
+    }
+
+    /* For the title if it's a child */
+
+    .plan-card.featured {
+      border-color: var(--primary);
+      box-shadow: 0 0 50px rgba(59, 130, 246, 0.25), inset 0 0 15px rgba(59, 130, 246, 0.1);
+    }
+
+    .plan-card.featured::before {
+      content: 'POPULAR';
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      font-size: 7px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 10px;
+      letter-spacing: 0.1em;
+    }
+
+    .plan-header {
+      margin-bottom: 12px;
+    }
+
+    .plan-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .plan-price {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 4px;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .plan-price span {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .plan-features li {
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .plan-features li::before {
+      content: '✓';
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .plan-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .plan-btn.primary {
+      background: var(--accent-gradient);
+      color: white;
+    }
+
+    .plan-btn.secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--surface-border);
+      color: var(--text-primary);
+    }
+
+    .plan-btn:active {
+      transform: scale(0.98);
+    }
+
     /* ══ SVG ICONS ══ */
     svg.icon {
       display: block;
@@ -1599,6 +2112,18 @@
             <div class="hero-eyebrow">
               <span class="hero-star">★</span> Sapphire Collection
             </div>
+          </div>
+          <div class="plus-trigger" onclick="goTo('upload')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:14px;height:14px;">
+              <path d="M12 5V19M5 12H19" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="premium-trigger" onclick="togglePremiumPopup(true)">
+            <svg viewBox="0 0 24 24" fill="none" class="icon" style="width:16px;height:16px;">
+              <path d="M6 12L12 18L18 12L12 6L6 12Z" fill="white" stroke="white" stroke-width="2"
+                stroke-linejoin="round" />
+              <path d="M12 6L18 12M12 18L6 12" stroke="white" stroke-width="2" stroke-linecap="round" />
+            </svg>
           </div>
           <div class="hero-heading">Craft<br>Perfect <em>Prompts</em></div>
           <div class="hero-sub">47 new premium prompts added today</div>
@@ -1641,7 +2166,7 @@
           <span class="section-title">✦ Featured Prompt</span>
         </div>
         <div class="featured-strip">
-          <div class="strip-label">Today's Royal Pick</div>
+          <div class="strip-label">Today's Sapphire Pick</div>
           <div class="strip-prompt">"A luminous celestial empress seated on a throne of crystallized starlight, her
             robes woven from the fabric of galaxies..."</div>
           <div class="strip-footer">
@@ -1685,6 +2210,65 @@
             </div>
           </div>
         </div>
+
+        <!-- Popular -->
+        <div class="section-head" style="margin-top:12px">
+          <span class="section-title">Popular</span>
+          <span class="section-see-all">View all</span>
+        </div>
+        <div class="h-scroll" style="padding-bottom:10px">
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-fantasy">🐉</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Mythic</div>
+              <div class="trend-name">Golden Dragon</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-portrait">🌊</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Ethereal</div>
+              <div class="trend-name">Ocean Spirit</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-sci">🦾</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Cyber</div>
+              <div class="trend-name">Neon Strike</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Most Viewed -->
+        <div class="section-head" style="margin-top:12px">
+          <span class="section-title">Most Viewed</span>
+          <span class="section-see-all">View all</span>
+        </div>
+        <div class="h-scroll" style="padding-bottom:10px">
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-arch">🏰</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Architecture</div>
+              <div class="trend-name">Sky Citadel</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-fantasy">🧚</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Fantasy</div>
+              <div class="trend-name">Pixie Dust</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-portrait">🎨</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Portrait</div>
+              <div class="trend-name">Artist Muse</div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="bottom-nav">
@@ -2366,7 +2950,7 @@
                 </svg>
               </div>
               <div class="setting-text">
-                <div class="setting-name">Royal Membership</div>
+                <div class="setting-name">Sapphire Membership</div>
                 <div class="setting-desc">Premium · Renews May 2026</div>
               </div>
               <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -2438,6 +3022,137 @@
       </div>
     </div>
 
+    <!-- ════════════ POPUP: PREMIUM PLANS ════════════ -->
+    <div class="popup-overlay" id="popup-premium">
+      <div class="close-circle" onclick="togglePremiumPopup(false)" style="top:20px; right:20px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:18px;height:18px;">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+
+      <div style="color:#737373; font-size:14px; font-weight:600; margin-bottom:10px;">Sapphire Plus</div>
+
+      <div class="icon-stack">
+        <div class="stack-item si-1">⚡</div>
+        <div class="stack-item si-2">👑</div>
+        <div class="stack-item si-3">🎧</div>
+      </div>
+
+      <h2 style="color:white; font-size:28px; font-weight:700; margin-bottom:25px; text-align:center;">Unlock sapphire
+        premium</h2>
+
+      <div class="benefit-list">
+        <div class="benefit-item">
+          <span class="benefit-check">✓</span>
+          <span>Unlimited Prompt Vault Exports</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-check">✓</span>
+          <span>Ultra HD 4K Generation Mode</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-check">✓</span>
+          <span>Priority Access to New AI Models</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-check">✓</span>
+          <span>No Advertisements & Cloud Sync</span>
+        </div>
+      </div>
+
+      <div class="price-toggles">
+        <div class="toggle-card" onclick="selectToggle(this)">
+          <div class="t-label">Weekly</div>
+          <div class="t-price">Free Trial</div>
+          <div class="t-sub">Play After Trial</div>
+        </div>
+        <div class="toggle-card active" onclick="selectToggle(this)">
+          <div class="toggle-badge">20% OFF</div>
+          <div class="t-label">Yearly</div>
+          <div class="t-price">$59.99</div>
+          <div class="t-sub">Billed Annually</div>
+        </div>
+        <div class="toggle-card" onclick="selectToggle(this)">
+          <div class="t-label">Monthly</div>
+          <div class="t-price">$9.99</div>
+          <div class="t-sub">Billed Monthly</div>
+        </div>
+      </div>
+
+      <button class="master-cta">Start Free Trial</button>
+
+      <div class="popup-footer-text">Invite 3 friends, get 2 months free</div>
+
+      <div class="popup-footer-links">
+        <a class="p-link">Promo Code</a>
+        <a class="p-link">Restore Purchase</a>
+        <a class="p-link">Terms of Services</a>
+      </div>
+    </div>
+
+    <!-- ════════════ SCREEN: UPLOAD ════════════ -->
+    <div class="screen" id="screen-upload">
+      <div class="status-bar"><span>9:41</span>
+        <div class="status-right"><span>●●</span></div>
+      </div>
+
+      <div class="scroll-content">
+        <div class="page-header" style="display:flex; align-items:center; gap:16px; padding: 20px 24px;">
+          <div class="back-btn" onclick="goBack()" style="position:static;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M15 19L8 12L15 5" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h2 style="color:white; font-size:20px; font-weight:700;">Post Prompt</h2>
+        </div>
+
+        <div class="upload-container">
+          <div class="upload-dropzone">
+            <div class="upload-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 16V8M12 8L9 11M12 8L15 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M3 15V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V15" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div style="color:white; font-size:14px; font-weight:600;">Click to upload</div>
+            <div style="color:#737373; font-size:11px;">PNG, JPG up to 10MB</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <div class="category-chips-form">
+              <div class="fchip-form active" onclick="this.classList.toggle('active')">Portrait</div>
+              <div class="fchip-form" onclick="this.classList.toggle('active')">Fantasy</div>
+              <div class="fchip-form" onclick="this.classList.toggle('active')">Arch</div>
+              <div class="fchip-form" onclick="this.classList.toggle('active')">Nature</div>
+              <div class="fchip-form" onclick="this.classList.toggle('active')">Cinema</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-input" placeholder="Give your masterpiece a name...">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">AI Prompt</label>
+            <textarea class="form-textarea" placeholder="Paste your Midjourney or DALL-E prompt here..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">AI Model</label>
+            <input type="text" class="form-input" placeholder="e.g. Midjourney v6, DALL-E 3...">
+          </div>
+
+          <button class="upload-submit-btn" onclick="showToast('Submitted successfully! ✦'); goBack();">Submit
+            Prompt</button>
+        </div>
+      </div>
+    </div>
+
     <!-- TOAST -->
     <div class="toast" id="toast">✦ Prompt copied to clipboard</div>
 
@@ -2447,7 +3162,23 @@
     let currentScreen = 'home';
     let screenHistory = [];
 
-    const screens = ['home', 'categories', 'subcategory', 'detail', 'favorites', 'profile'];
+    function togglePremiumPopup(show) {
+      const popup = document.getElementById('popup-premium');
+      if (show) {
+        popup.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      } else {
+        popup.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function selectToggle(el) {
+      document.querySelectorAll('.toggle-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    const screens = ['home', 'categories', 'subcategory', 'detail', 'favorites', 'profile', 'upload'];
 
     function goTo(id) {
       if (id === currentScreen) return;
@@ -2511,8 +3242,9 @@
       showToast();
     }
 
-    function showToast() {
+    function showToast(msg = '✦ Prompt copied to clipboard') {
       const toast = document.getElementById('toast');
+      toast.textContent = msg;
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
