@@ -1,1887 +1,2549 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Luxe Prompt — Royal AI Prompt Gallery</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --obsidian: #08080f;
-    --surface: #0e0e1c;
-    --surface2: #13132a;
-    --surface3: #1a1a32;
-    --gold: #c9a84c;
-    --gold-dim: #8a6a28;
-    --gold-glow: rgba(201,168,76,0.15);
-    --violet: #7c3aed;
-    --violet-dim: #4c1d95;
-    --violet-glow: rgba(124,58,237,0.15);
-    --ivory: #f0e6cc;
-    --ivory-dim: #c8b898;
-    --ivory-muted: #6a6080;
-    --border-gold: rgba(201,168,76,0.2);
-    --border-gold-mid: rgba(201,168,76,0.4);
-    --border-violet: rgba(124,58,237,0.25);
-    --font-display: 'Cormorant Garamond', serif;
-    --font-ui: 'Outfit', sans-serif;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sapphire Prompt — Premium AI Prompt Gallery</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-start: #020617;
+      --bg-end: #1e1b4b;
+      --primary: #3b82f6;
+      /* Sapphire Blue */
+      --primary-glow: rgba(59, 130, 246, 0.2);
+      --secondary: #8b5cf6;
+      /* Amethyst Purple */
+      --secondary-glow: rgba(139, 92, 246, 0.2);
+      --accent-gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+      --surface: rgba(30, 41, 59, 0.5);
+      /* Glass-like surface */
+      --surface-border: rgba(255, 255, 255, 0.1);
+      --text-primary: #ffffff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-ui: 'Outfit', sans-serif;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  body {
-    background: #050509;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    font-family: var(--font-ui);
-    overflow-x: hidden;
-  }
+    body {
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: var(--font-ui);
+      overflow-x: hidden;
+      color: var(--text-primary);
+    }
 
-  /* ══ PHONE SHELL ══ */
-  .phone {
-    width: 390px;
-    min-height: 844px;
-    background: var(--obsidian);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 80px rgba(201,168,76,0.08), 0 0 1px rgba(201,168,76,0.4);
-  }
+    /* ══ PHONE SHELL ══ */
+    .phone {
+      width: 390px;
+      min-height: 844px;
+      background: rgba(15, 23, 42, 0.8);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 100px rgba(59, 130, 246, 0.1), 0 0 1px rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--surface-border);
+    }
 
-  @media (max-width: 420px) {
-    .phone { width: 100vw; min-height: 100dvh; }
-    body { align-items: flex-start; }
-  }
+    @media (max-width: 420px) {
+      .phone {
+        width: 100vw;
+        min-height: 100dvh;
+      }
 
-  /* ══ SCREENS ══ */
-  .screen {
-    position: absolute;
-    inset: 0;
-    background: var(--obsidian);
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4,0,0.2,1);
-    transform: translateX(30px);
-    overflow: hidden;
-  }
-  .screen.active {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateX(0);
-  }
-  .screen.prev {
-    transform: translateX(-30px);
-    opacity: 0;
-  }
+      body {
+        align-items: flex-start;
+      }
+    }
 
-  /* ══ STATUS BAR ══ */
-  .status-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 24px 6px;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--gold);
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-  .status-right { display: flex; gap: 6px; align-items: center; }
-  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.7; }
+    /* ══ SCREENS ══ */
+    .screen {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(30px);
+      overflow: hidden;
+    }
 
-  /* ══ BOTTOM NAV ══ */
-  .bottom-nav {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 80px;
-    background: rgba(10,10,20,0.96);
-    border-top: 0.5px solid var(--border-gold);
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 10px 16px;
-    backdrop-filter: blur(20px);
-    z-index: 100;
-  }
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    padding: 8px 16px;
-    border-radius: 16px;
-    transition: all 0.2s ease;
-    position: relative;
-  }
-  .nav-item:active { transform: scale(0.9); }
-  .nav-item.active .nav-icon-wrap {
-    background: var(--gold-glow);
-    border-color: var(--border-gold-mid);
-  }
-  .nav-item.active .nav-label { color: var(--gold); }
-  .nav-icon-wrap {
-    width: 40px; height: 40px;
-    border-radius: 14px;
-    border: 0.5px solid transparent;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .nav-icon {
-    width: 20px; height: 20px;
-  }
-  .nav-label {
-    font-size: 9px;
-    font-weight: 500;
-    color: var(--ivory-muted);
-    letter-spacing: 0.06em;
-    transition: color 0.2s;
-  }
+    .screen.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(0);
+    }
 
-  /* ══ SCROLLABLE CONTENT ══ */
-  .scroll-content {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-bottom: 80px;
-    scrollbar-width: none;
-  }
-  .scroll-content::-webkit-scrollbar { display: none; }
+    .screen.prev {
+      transform: translateX(-30px);
+      opacity: 0;
+    }
 
-  /* ══ BACK HEADER ══ */
-  .page-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 20px 12px;
-    flex-shrink: 0;
-  }
-  .back-btn {
-    width: 36px; height: 36px;
-    background: var(--surface2);
-    border: 0.5px solid var(--border-gold);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  .back-btn:active { transform: scale(0.9); background: var(--gold-glow); }
-  .page-header-text { flex: 1; }
-  .page-title { font-size: 18px; font-weight: 600; color: var(--ivory); letter-spacing: -0.01em; }
-  .page-subtitle { font-size: 11px; color: var(--ivory-muted); margin-top: 1px; }
+    /* ══ STATUS BAR ══ */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px 6px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--primary);
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
 
-  /* ══ GOLD BADGE ══ */
-  .gold-badge {
-    background: var(--gold-glow);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--gold);
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-  }
+    .status-right {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
 
-  /* ══ SECTION HEADER ══ */
-  .section-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 20px 8px;
-  }
-  .section-title {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .section-see-all {
-    font-size: 11px;
-    color: var(--violet);
-    cursor: pointer;
-    letter-spacing: 0.02em;
-  }
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0.7;
+    }
 
-  /* ══════════════════════ HOME SCREEN ══════════════════════ */
-  .home-hero {
-    height: 220px;
-    background: linear-gradient(150deg, #1a0830 0%, #0e0e1c 55%, #100a00 100%);
-    position: relative;
-    overflow: hidden;
-    padding: 20px 24px 0;
-    flex-shrink: 0;
-  }
-  .hero-orb1 {
-    position: absolute;
-    right: -40px; top: -40px;
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%);
-    border: 0.5px solid rgba(124,58,237,0.2);
-  }
-  .hero-orb2 {
-    position: absolute;
-    right: 20px; top: 20px;
-    width: 100px; height: 100px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%);
-    border: 0.5px solid rgba(201,168,76,0.15);
-  }
-  .hero-badge-wrap { margin-bottom: 10px; }
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: var(--gold-glow);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .hero-star { color: var(--gold); font-size: 8px; }
-  .hero-heading {
-    font-family: var(--font-display);
-    font-size: 38px;
-    font-weight: 700;
-    color: var(--ivory);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-  }
-  .hero-heading em { color: var(--gold); font-style: italic; }
-  .hero-sub {
-    font-size: 11px;
-    color: var(--ivory-muted);
-    margin-top: 6px;
-    letter-spacing: 0.02em;
-  }
-  .hero-ctas {
-    display: flex;
-    gap: 10px;
-    margin-top: 16px;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, #c9a84c, #8a6a28);
-    border-radius: 24px;
-    padding: 10px 20px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #080810;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: none;
-    font-family: var(--font-ui);
-  }
-  .btn-primary:active { transform: scale(0.95); opacity: 0.9; }
-  .btn-ghost {
-    background: transparent;
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 24px;
-    padding: 10px 20px;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: var(--font-ui);
-  }
-  .btn-ghost:active { transform: scale(0.95); background: var(--gold-glow); }
+    /* ══ BOTTOM NAV ══ */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: rgba(15, 23, 42, 0.9);
+      border-top: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px 16px;
+      backdrop-filter: blur(20px);
+      z-index: 100;
+    }
 
-  /* Horizontal scroll */
-  .h-scroll {
-    display: flex;
-    gap: 10px;
-    padding: 0 20px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .h-scroll::-webkit-scrollbar { display: none; }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 16px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
 
-  /* Category chips */
-  .cat-chip {
-    flex-shrink: 0;
-    width: 80px;
-    border-radius: 14px;
-    overflow: hidden;
-    border: 0.5px solid var(--border-gold);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .cat-chip:active { transform: scale(0.95); border-color: var(--border-gold-mid); }
-  .cat-chip-img {
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    position: relative;
-  }
-  .cat-chip-label {
-    background: var(--surface);
-    padding: 5px 4px;
-    font-size: 9px;
-    font-weight: 500;
-    color: var(--ivory-dim);
-    text-align: center;
-    letter-spacing: 0.04em;
-  }
+    .nav-item:active {
+      transform: scale(0.9);
+    }
 
-  /* Trend cards */
-  .trend-card {
-    flex-shrink: 0;
-    width: 150px;
-    height: 90px;
-    border-radius: 14px;
-    position: relative;
-    overflow: hidden;
-    border: 0.5px solid var(--border-gold);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .trend-card:active { transform: scale(0.97); }
-  .trend-bg {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
-  }
-  .trend-overlay {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: linear-gradient(transparent, rgba(8,8,16,0.9));
-    padding: 10px 10px 7px;
-  }
-  .trend-tag {
-    font-size: 8px;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .trend-name {
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--ivory);
-    margin-top: 1px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    .nav-item.active .nav-icon-wrap {
+      background: var(--primary-glow);
+      border-color: var(--primary);
+    }
 
-  /* Featured prompt strip */
-  .featured-strip {
-    margin: 0 20px;
-    background: var(--surface2);
-    border: 0.5px solid var(--border-gold);
-    border-radius: 16px;
-    padding: 14px 16px;
-    position: relative;
-    overflow: hidden;
-  }
-  .featured-strip::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0.5;
-  }
-  .strip-label {
-    font-size: 8px;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .strip-prompt {
-    font-family: var(--font-display);
-    font-size: 13px;
-    color: var(--ivory-dim);
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .strip-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-  }
-  .strip-tag {
-    font-size: 9px;
-    color: var(--ivory-muted);
-    letter-spacing: 0.04em;
-  }
-  .strip-copy {
-    background: var(--gold-glow);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--gold);
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: var(--font-ui);
-    letter-spacing: 0.06em;
-  }
-  .strip-copy:active { transform: scale(0.95); }
+    .nav-item.active .nav-label {
+      color: var(--primary);
+    }
 
-  /* ══════════════════════ CATEGORY SCREEN ══════════════════════ */
-  .cat-screen-head {
-    padding: 4px 20px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .cat-screen-title {
-    font-family: var(--font-display);
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--ivory);
-    letter-spacing: -0.02em;
-  }
+    .nav-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      border: 0.5px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
 
-  .search-bar {
-    margin: 0 20px 12px;
-    background: var(--surface2);
-    border: 0.5px solid var(--border-gold);
-    border-radius: 24px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: border-color 0.2s;
-  }
-  .search-bar:focus-within { border-color: var(--border-gold-mid); }
-  .search-bar input {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    font-size: 12px;
-    color: var(--ivory);
-    font-family: var(--font-ui);
-    letter-spacing: 0.02em;
-  }
-  .search-bar input::placeholder { color: var(--ivory-muted); }
-  .search-svg { flex-shrink: 0; opacity: 0.5; }
-  .filter-pill {
-    background: var(--violet-glow);
-    border: 0.5px solid var(--border-violet);
-    border-radius: 12px;
-    padding: 4px 10px;
-    font-size: 10px;
-    font-weight: 500;
-    color: #a78bfa;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    white-space: nowrap;
-  }
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+    }
 
-  .filter-chips {
-    display: flex;
-    gap: 6px;
-    padding: 0 20px 12px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .filter-chips::-webkit-scrollbar { display: none; }
-  .fchip {
-    flex-shrink: 0;
-    border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 10px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.04em;
-    font-family: var(--font-ui);
-    border: none;
-  }
-  .fchip.active {
-    background: var(--gold);
-    color: #08080f;
-    font-weight: 700;
-  }
-  .fchip:not(.active) {
-    background: var(--surface2);
-    border: 0.5px solid var(--border-gold);
-    color: var(--ivory-muted);
-  }
-  .fchip:active { transform: scale(0.95); }
+    .nav-label {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
 
-  .cat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 0 20px;
-  }
-  .cat-card {
-    border-radius: 16px;
-    overflow: hidden;
-    border: 0.5px solid var(--border-gold);
-    cursor: pointer;
-    transition: all 0.25s;
-    background: var(--surface);
-  }
-  .cat-card:active { transform: scale(0.97); border-color: var(--border-gold-mid); }
-  .cat-card-img {
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 34px;
-    position: relative;
-    overflow: hidden;
-  }
-  .cat-card-shimmer {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(201,168,76,0.06) 50%, transparent 60%);
-  }
-  .cat-card-info { padding: 8px 10px 10px; }
-  .cat-card-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ivory);
-    letter-spacing: 0.02em;
-  }
-  .cat-card-count {
-    font-size: 9px;
-    color: var(--ivory-muted);
-    margin-top: 2px;
-    letter-spacing: 0.04em;
-  }
-  .cat-card-bar {
-    height: 2px;
-    background: var(--surface3);
-    border-radius: 2px;
-    margin-top: 6px;
-    overflow: hidden;
-  }
-  .cat-card-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--gold), var(--violet));
-    border-radius: 2px;
-  }
+    /* ══ SCROLLABLE CONTENT ══ */
+    .scroll-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 80px;
+      scrollbar-width: none;
+    }
 
-  /* ══════════════════════ SUBCATEGORY SCREEN ══════════════════════ */
-  .sub-banner {
-    height: 110px;
-    margin: 0 20px 14px;
-    border-radius: 18px;
-    display: flex;
-    align-items: flex-end;
-    padding: 12px 14px;
-    position: relative;
-    overflow: hidden;
-    border: 0.5px solid var(--border-gold);
-    cursor: pointer;
-  }
-  .sub-banner-emoji {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -60%);
-    font-size: 44px;
-    opacity: 0.9;
-  }
-  .sub-banner-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(transparent 30%, rgba(8,8,16,0.85));
-  }
-  .sub-banner-chips {
-    display: flex;
-    gap: 6px;
-    z-index: 1;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .sub-banner-chips::-webkit-scrollbar { display: none; }
-  .sub-chip {
-    flex-shrink: 0;
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 9px;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.06em;
-    transition: all 0.2s;
-  }
-  .sub-chip.active {
-    background: var(--gold);
-    color: #08080f;
-  }
-  .sub-chip:not(.active) {
-    background: rgba(14,14,28,0.8);
-    border: 0.5px solid var(--border-gold-mid);
-    color: var(--gold);
-  }
+    .scroll-content::-webkit-scrollbar {
+      display: none;
+    }
 
-  .sub-meta {
-    padding: 0 20px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .sub-count { font-size: 11px; color: var(--ivory-muted); letter-spacing: 0.04em; }
-  .sub-sort {
-    background: var(--surface2);
-    border: 0.5px solid var(--border-gold);
-    border-radius: 12px;
-    padding: 5px 10px;
-    font-size: 9px;
-    font-weight: 500;
-    color: var(--gold);
-    cursor: pointer;
-    font-family: var(--font-ui);
-    letter-spacing: 0.06em;
-  }
+    /* ══ BACK HEADER ══ */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px 12px;
+      flex-shrink: 0;
+    }
 
-  .sub-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    padding: 0 20px;
-  }
-  .sub-photo {
-    aspect-ratio: 1;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    border: 0.5px solid var(--border-gold);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.2s;
-  }
-  .sub-photo:active { transform: scale(0.95); border-color: var(--border-gold-mid); }
-  .sub-photo-badge {
-    position: absolute;
-    bottom: 4px; right: 4px;
-    width: 16px; height: 16px;
-    background: var(--gold);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 8px;
-    color: #08080f;
-    font-weight: 700;
-  }
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
 
-  /* ══════════════════════ PHOTO DETAIL SCREEN ══════════════════════ */
-  .photo-full-wrap {
-    position: relative;
-    height: 280px;
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-  .photo-full {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 80px;
-  }
-  .photo-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(transparent 40%, var(--obsidian) 100%);
-  }
-  .photo-top-actions {
-    position: absolute;
-    top: 16px;
-    left: 20px; right: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 2;
-  }
-  .photo-back-btn {
-    width: 36px; height: 36px;
-    background: rgba(8,8,16,0.7);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    transition: all 0.2s;
-  }
-  .photo-back-btn:active { transform: scale(0.9); }
-  .photo-side-actions {
-    display: flex; gap: 8px;
-  }
-  .photo-action-btn {
-    width: 36px; height: 36px;
-    background: rgba(8,8,16,0.7);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    transition: all 0.2s;
-  }
-  .photo-action-btn:active { transform: scale(0.9); }
-  .photo-action-btn.loved { border-color: #e84393; background: rgba(232,67,147,0.15); }
+    .back-btn:active {
+      transform: scale(0.9);
+      background: var(--primary-glow);
+    }
 
-  .photo-info {
-    position: absolute;
-    bottom: 16px;
-    left: 20px; right: 70px;
-    z-index: 2;
-  }
-  .photo-cat-tag {
-    display: inline-block;
-    background: rgba(8,8,16,0.7);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    margin-bottom: 6px;
-    backdrop-filter: blur(6px);
-  }
-  .photo-name {
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--ivory);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-  }
-  .photo-by {
-    font-size: 10px;
-    color: var(--ivory-muted);
-    margin-top: 3px;
-    letter-spacing: 0.04em;
-  }
+    .page-header-text {
+      flex: 1;
+    }
 
-  .prompt-panel {
-    margin: 12px 20px;
-    background: var(--surface2);
-    border: 0.5px solid var(--border-gold);
-    border-radius: 18px;
-    padding: 14px 16px;
-    position: relative;
-    overflow: hidden;
-  }
-  .prompt-panel::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0.4;
-  }
-  .prompt-panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .prompt-label {
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .prompt-inline-copy {
-    background: var(--gold-glow);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--gold);
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: var(--font-ui);
-    letter-spacing: 0.06em;
-  }
-  .prompt-inline-copy:active { transform: scale(0.95); }
-  .prompt-text {
-    font-family: var(--font-display);
-    font-size: 14px;
-    color: var(--ivory-dim);
-    line-height: 1.7;
-    font-style: italic;
-    letter-spacing: 0.01em;
-  }
-  .prompt-tools {
-    display: flex;
-    gap: 6px;
-    margin-top: 10px;
-  }
-  .ptool {
-    background: var(--surface3);
-    border: 0.5px solid var(--border-gold);
-    border-radius: 8px;
-    padding: 4px 8px;
-    font-size: 9px;
-    font-weight: 500;
-    color: var(--ivory-muted);
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .ptool:active { background: var(--gold-glow); color: var(--gold); border-color: var(--border-gold-mid); }
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
 
-  .detail-actions {
-    display: flex;
-    gap: 10px;
-    padding: 0 20px 8px;
-  }
+    .page-subtitle {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
 
-  .detail-stats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px 4px;
-  }
-  .detail-saves { font-size: 10px; color: var(--ivory-muted); letter-spacing: 0.02em; }
-  .detail-share {
-    font-size: 10px;
-    color: var(--violet);
-    cursor: pointer;
-    letter-spacing: 0.04em;
-  }
+    /* ══ GOLD BADGE ══ */
+    .gold-badge {
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--primary);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
 
-  /* ══════════════════════ FAVORITES SCREEN ══════════════════════ */
-  .fav-header {
-    padding: 4px 20px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  .fav-title {
-    font-family: var(--font-display);
-    font-size: 30px;
-    font-weight: 700;
-    color: var(--ivory);
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-  .fav-title span { color: var(--gold); }
+    /* ══ SECTION HEADER ══ */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px 8px;
+    }
 
-  .fav-masonry {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 0 20px;
-    align-items: start;
-  }
-  .fav-col { display: flex; flex-direction: column; gap: 10px; }
-  .fav-col:last-child { margin-top: 28px; }
+    .section-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
 
-  .fav-card {
-    border-radius: 16px;
-    overflow: hidden;
-    border: 0.5px solid var(--border-gold);
-    background: var(--surface);
-    cursor: pointer;
-    transition: all 0.25s;
-  }
-  .fav-card:active { transform: scale(0.97); border-color: var(--border-gold-mid); }
-  .fav-card-img {
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .fav-card-img span { font-size: 32px; position: relative; z-index: 1; }
-  .fav-img-tall { height: 110px; }
-  .fav-img-short { height: 75px; }
-  .fav-heart-badge {
-    position: absolute;
-    top: 7px; right: 7px;
-    width: 22px; height: 22px;
-    background: #e84393;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px;
-    z-index: 2;
-  }
-  .fav-card-body { padding: 8px 10px 10px; }
-  .fav-card-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ivory-dim);
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .fav-preview {
-    font-family: var(--font-display);
-    font-size: 10px;
-    color: var(--ivory-muted);
-    line-height: 1.5;
-    font-style: italic;
-    margin-top: 2px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .fav-copy-pill {
-    display: inline-block;
-    margin-top: 6px;
-    background: var(--gold-glow);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 8px;
-    font-weight: 600;
-    color: var(--gold);
-    cursor: pointer;
-    letter-spacing: 0.08em;
-    transition: all 0.2s;
-  }
-  .fav-copy-pill:active { transform: scale(0.95); }
+    .section-see-all {
+      font-size: 11px;
+      color: var(--secondary);
+      cursor: pointer;
+      letter-spacing: 0.02em;
+    }
 
-  /* ══════════════════════ PROFILE SCREEN ══════════════════════ */
-  .profile-hero {
-    height: 120px;
-    background: linear-gradient(150deg, #1a0830, #0e0e1c);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    padding: 0 20px 16px;
-    flex-shrink: 0;
-  }
-  .profile-ring1 {
-    position: absolute; right: -50px; top: -50px;
-    width: 180px; height: 180px; border-radius: 50%;
-    border: 0.5px solid rgba(124,58,237,0.2);
-  }
-  .profile-ring2 {
-    position: absolute; right: -20px; top: -20px;
-    width: 110px; height: 110px; border-radius: 50%;
-    border: 0.5px solid rgba(201,168,76,0.2);
-  }
-  .avatar {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--violet));
-    border: 2px solid var(--gold);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--ivory);
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-  }
-  .profile-info { margin-left: 12px; z-index: 1; flex: 1; }
-  .profile-name {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--ivory);
-    letter-spacing: -0.01em;
-    line-height: 1;
-  }
-  .profile-tier {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--gold-glow);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-    margin-top: 5px;
-  }
-  .edit-btn {
-    width: 32px; height: 32px;
-    background: var(--gold-glow);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    z-index: 1;
-    transition: all 0.2s;
-  }
-  .edit-btn:active { transform: scale(0.9); }
+    /* ══════════════════════ HOME SCREEN ══════════════════════ */
+    .home-hero {
+      height: 220px;
+      background: linear-gradient(150deg, #1e1b4b 0%, #0f172a 55%, #020617 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 20px 24px 0;
+      flex-shrink: 0;
+    }
 
-  .profile-stats {
-    display: flex;
-    margin: 12px 20px;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 0.5px solid var(--border-gold);
-  }
-  .stat-cell {
-    flex: 1;
-    text-align: center;
-    padding: 10px 6px;
-    background: var(--surface);
-    border-right: 0.5px solid var(--border-gold);
-  }
-  .stat-cell:last-child { border-right: none; }
-  .stat-num {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .stat-lbl {
-    font-size: 8px;
-    font-weight: 500;
-    color: var(--ivory-muted);
-    margin-top: 3px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+    .hero-orb1 {
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--secondary-glow), transparent 70%);
+      border: 0.5px solid var(--secondary-glow);
+    }
 
-  .settings-section { padding: 0 20px; }
-  .settings-section-label {
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 4px 0 8px;
-  }
-  .settings-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 16px;
-  }
-  .setting-row {
-    background: var(--surface);
-    border: 0.5px solid var(--border-gold);
-    border-radius: 14px;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .setting-row:active { background: var(--surface2); border-color: var(--border-gold-mid); }
-  .setting-icon {
-    width: 32px; height: 32px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .si-gold { background: var(--gold-glow); border: 0.5px solid var(--border-gold-mid); }
-  .si-violet { background: var(--violet-glow); border: 0.5px solid var(--border-violet); }
-  .si-danger { background: rgba(220,38,38,0.1); border: 0.5px solid rgba(220,38,38,0.3); }
-  .setting-text { flex: 1; }
-  .setting-name { font-size: 12px; font-weight: 500; color: var(--ivory); letter-spacing: 0.01em; }
-  .setting-desc { font-size: 10px; color: var(--ivory-muted); margin-top: 1px; letter-spacing: 0.02em; }
-  .setting-chevron { color: var(--ivory-muted); opacity: 0.4; }
+    .hero-orb2 {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--primary-glow), transparent 70%);
+      border: 0.5px solid var(--primary-glow);
+    }
 
-  /* Toggle */
-  .toggle {
-    width: 36px; height: 18px;
-    background: var(--gold);
-    border-radius: 9px;
-    position: relative;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .toggle-knob {
-    position: absolute;
-    right: 2px; top: 2px;
-    width: 14px; height: 14px;
-    background: #08080f;
-    border-radius: 50%;
-    transition: all 0.2s;
-  }
+    .hero-badge-wrap {
+      margin-bottom: 10px;
+    }
 
-  /* ══ COPY TOAST ══ */
-  .toast {
-    position: fixed;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--surface2);
-    border: 0.5px solid var(--border-gold-mid);
-    border-radius: 24px;
-    padding: 10px 20px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-    z-index: 9999;
-    pointer-events: none;
-    white-space: nowrap;
-    backdrop-filter: blur(10px);
-  }
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
 
-  /* ══ GRADIENTS FOR CARDS ══ */
-  .g-portrait { background: linear-gradient(150deg, #1a0820, #0a0a1a); }
-  .g-fantasy { background: linear-gradient(150deg, #1a1200, #0f0f1e); }
-  .g-arch { background: linear-gradient(150deg, #0a1a1a, #0a0a1a); }
-  .g-abstract { background: linear-gradient(150deg, #1e0a1a, #0a0a1a); }
-  .g-nature { background: linear-gradient(150deg, #0a1a0a, #0a0a1a); }
-  .g-cinema { background: linear-gradient(150deg, #1a0a0a, #0a0a1a); }
-  .g-sci { background: linear-gradient(150deg, #001828, #0a0a1a); }
-  .g-dark { background: linear-gradient(150deg, #080812, #141428); }
-  .g-myth { background: linear-gradient(150deg, #1a0028, #0a0a1a); }
+    .hero-star {
+      color: var(--primary);
+      font-size: 8px;
+    }
 
-  /* ══ SVG ICONS ══ */
-  svg.icon { display: block; }
-</style>
+    .hero-heading {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-heading em {
+      color: var(--primary);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 11px;
+      color: var(--ivory-muted);
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      border-radius: 24px;
+      padding: 10px 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-family: var(--font-ui);
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.95);
+      opacity: 0.9;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--primary);
+      border-radius: 24px;
+      padding: 10px 20px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--primary);
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-ui);
+    }
+
+    .btn-ghost:active {
+      transform: scale(0.95);
+      background: var(--primary-glow);
+    }
+
+    /* Horizontal scroll */
+    .h-scroll {
+      display: flex;
+      gap: 10px;
+      padding: 0 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .h-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Category chips */
+    .cat-chip {
+      flex-shrink: 0;
+      width: 80px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--surface-border);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--surface);
+    }
+
+    .cat-chip:active {
+      transform: scale(0.95);
+      border-color: var(--primary);
+    }
+
+    .cat-chip-img {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      position: relative;
+    }
+
+    .cat-chip-label {
+      background: rgba(15, 23, 42, 0.8);
+      padding: 5px 4px;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+
+    /* Trend cards */
+    .trend-card {
+      flex-shrink: 0;
+      width: 150px;
+      height: 90px;
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--surface-border);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--surface);
+    }
+
+    .trend-card:active {
+      transform: scale(0.97);
+      border-color: var(--primary);
+    }
+
+    .trend-bg {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+    }
+
+    .trend-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(2, 6, 23, 0.9));
+      padding: 10px 10px 7px;
+    }
+
+    .trend-tag {
+      font-size: 8px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .trend-name {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Featured prompt strip */
+    .featured-strip {
+      margin: 0 20px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .featured-strip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--accent-gradient);
+      opacity: 0.5;
+    }
+
+    .strip-label {
+      font-size: 8px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .strip-prompt {
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .strip-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .strip-tag {
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .strip-copy {
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-ui);
+      letter-spacing: 0.06em;
+    }
+
+    .strip-copy:active {
+      transform: scale(0.95);
+    }
+
+    /* ══════════════════════ CATEGORY SCREEN ══════════════════════ */
+    .cat-screen-head {
+      padding: 4px 20px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cat-screen-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .search-bar {
+      margin: 0 20px 12px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 24px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.2s;
+    }
+
+    .search-bar:focus-within {
+      border-color: var(--border-gold-mid);
+    }
+
+    .search-bar input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 12px;
+      color: var(--text-primary);
+      font-family: var(--font-ui);
+      letter-spacing: 0.02em;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--ivory-muted);
+    }
+
+    .search-svg {
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+
+    .filter-pill {
+      background: var(--violet-glow);
+      border: 0.5px solid var(--border-violet);
+      border-radius: 12px;
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #a78bfa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 6px;
+      padding: 0 20px 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .filter-chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fchip {
+      flex-shrink: 0;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.04em;
+      font-family: var(--font-ui);
+      border: none;
+    }
+
+    .fchip.active {
+      background: var(--gold);
+      color: #08080f;
+      font-weight: 700;
+    }
+
+    .fchip:not(.active) {
+      background: var(--surface2);
+      border: 0.5px solid var(--border-gold);
+      color: var(--ivory-muted);
+    }
+
+    .fchip:active {
+      transform: scale(0.95);
+    }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 20px;
+    }
+
+    .cat-card {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 0.5px solid var(--border-gold);
+      cursor: pointer;
+      transition: all 0.25s;
+      background: var(--surface);
+    }
+
+    .cat-card:active {
+      transform: scale(0.97);
+      border-color: var(--border-gold-mid);
+    }
+
+    .cat-card-img {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cat-card-shimmer {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(201, 168, 76, 0.06) 50%, transparent 60%);
+    }
+
+    .cat-card-info {
+      padding: 8px 10px 10px;
+    }
+
+    .cat-card-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ivory);
+      letter-spacing: 0.02em;
+    }
+
+    .cat-card-count {
+      font-size: 9px;
+      color: var(--ivory-muted);
+      margin-top: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    .cat-card-bar {
+      height: 2px;
+      background: var(--surface3);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .cat-card-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--violet));
+      border-radius: 2px;
+    }
+
+    /* ══════════════════════ SUBCATEGORY SCREEN ══════════════════════ */
+    .sub-banner {
+      height: 110px;
+      margin: 0 20px 14px;
+      border-radius: 18px;
+      display: flex;
+      align-items: flex-end;
+      padding: 12px 14px;
+      position: relative;
+      overflow: hidden;
+      border: 0.5px solid var(--border-gold);
+      cursor: pointer;
+    }
+
+    .sub-banner-emoji {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      font-size: 44px;
+      opacity: 0.9;
+    }
+
+    .sub-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 30%, rgba(8, 8, 16, 0.85));
+    }
+
+    .sub-banner-chips {
+      display: flex;
+      gap: 6px;
+      z-index: 1;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .sub-banner-chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sub-chip {
+      flex-shrink: 0;
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 9px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      transition: all 0.2s;
+    }
+
+    .sub-chip.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .sub-chip:not(.active) {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--primary);
+    }
+
+    .sub-meta {
+      padding: 0 20px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sub-count {
+      font-size: 11px;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+    }
+
+    .sub-sort {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 5px 10px;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--primary);
+      cursor: pointer;
+      font-family: var(--font-ui);
+      letter-spacing: 0.06em;
+    }
+
+    .sub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 0 20px;
+    }
+
+    .sub-photo {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      border: 1px solid var(--surface-border);
+      background: var(--surface);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .sub-photo:active {
+      transform: scale(0.95);
+      border-color: var(--primary);
+    }
+
+    .sub-photo-badge {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* ══════════════════════ PHOTO DETAIL SCREEN ══════════════════════ */
+    .photo-full-wrap {
+      position: relative;
+      height: 280px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .photo-full {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+    }
+
+    .photo-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 40%, var(--bg-start) 100%);
+    }
+
+    .photo-top-actions {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .photo-back-btn {
+      width: 36px;
+      height: 36px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+    }
+
+    .photo-back-btn:active {
+      transform: scale(0.9);
+    }
+
+    .photo-side-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .photo-action-btn {
+      width: 36px;
+      height: 36px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+    }
+
+    .photo-action-btn:active {
+      transform: scale(0.9);
+    }
+
+    .photo-action-btn.loved {
+      border-color: #e84393;
+      background: rgba(232, 67, 147, 0.15);
+    }
+
+    .photo-info {
+      position: absolute;
+      bottom: 16px;
+      left: 20px;
+      right: 70px;
+      z-index: 2;
+    }
+
+    .photo-cat-tag {
+      display: inline-block;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+      backdrop-filter: blur(6px);
+    }
+
+    .photo-name {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    .photo-by {
+      font-size: 10px;
+      color: var(--ivory-muted);
+      margin-top: 3px;
+      letter-spacing: 0.04em;
+    }
+
+    .prompt-panel {
+      margin: 12px 20px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 18px;
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prompt-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--accent-gradient);
+      opacity: 0.4;
+    }
+
+    .prompt-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .prompt-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .prompt-inline-copy {
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-ui);
+      letter-spacing: 0.06em;
+    }
+
+    .prompt-inline-copy:active {
+      transform: scale(0.95);
+    }
+
+    .prompt-text {
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+
+    .prompt-tools {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .ptool {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ptool:active {
+      background: var(--primary-glow);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: 10px;
+      padding: 0 20px 8px;
+    }
+
+    .detail-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px 4px;
+    }
+
+    .detail-saves {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .detail-share {
+      font-size: 10px;
+      color: var(--secondary);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+
+    /* ══════════════════════ FAVORITES SCREEN ══════════════════════ */
+    .fav-header {
+      padding: 4px 20px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .fav-title {
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .fav-title span {
+      color: var(--primary);
+    }
+
+    .fav-masonry {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 20px;
+      align-items: start;
+    }
+
+    .fav-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fav-col:last-child {
+      margin-top: 28px;
+    }
+
+    .fav-card {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--surface-border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .fav-card:active {
+      transform: scale(0.97);
+      border-color: var(--primary);
+    }
+
+    .fav-card-img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fav-card-img span {
+      font-size: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .fav-img-tall {
+      height: 110px;
+    }
+
+    .fav-img-short {
+      height: 75px;
+    }
+
+    .fav-heart-badge {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 22px;
+      height: 22px;
+      background: #e84393;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      z-index: 2;
+    }
+
+    .fav-card-body {
+      padding: 8px 10px 10px;
+    }
+
+    .fav-card-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fav-preview {
+      font-family: var(--font-display);
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-style: italic;
+      margin-top: 2px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .fav-copy-pill {
+      display: inline-block;
+      margin-top: 6px;
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 8px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      transition: all 0.2s;
+    }
+
+    .fav-copy-pill:active {
+      transform: scale(0.95);
+    }
+
+    /* ══════════════════════ PROFILE SCREEN ══════════════════════ */
+    .profile-hero {
+      height: 120px;
+      background: linear-gradient(150deg, #1e1b4b, var(--bg-start));
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 20px 16px;
+      flex-shrink: 0;
+    }
+
+    .profile-ring1 {
+      position: absolute;
+      right: -50px;
+      top: -50px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 0.5px solid rgba(124, 58, 237, 0.2);
+    }
+
+    .profile-ring2 {
+      position: absolute;
+      right: -20px;
+      top: -20px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 0.5px solid rgba(201, 168, 76, 0.2);
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent-gradient);
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-info {
+      margin-left: 12px;
+      z-index: 1;
+      flex: 1;
+    }
+
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+
+    .profile-tier {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+      margin-top: 5px;
+    }
+
+    .edit-btn {
+      width: 32px;
+      height: 32px;
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1;
+      transition: all 0.2s;
+    }
+
+    .edit-btn:active {
+      transform: scale(0.9);
+    }
+
+    .profile-stats {
+      display: flex;
+      margin: 12px 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--surface-border);
+    }
+
+    .stat-cell {
+      flex: 1;
+      text-align: center;
+      padding: 10px 6px;
+      background: var(--surface);
+      border-right: 1px solid var(--surface-border);
+    }
+
+    .stat-cell:last-child {
+      border-right: none;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 3px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .settings-section {
+      padding: 0 20px;
+    }
+
+    .settings-section-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 4px 0 8px;
+    }
+
+    .settings-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .setting-row {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .setting-row:active {
+      background: var(--primary-glow);
+      border-color: var(--primary);
+    }
+
+    .setting-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .si-gold {
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+    }
+
+    .si-violet {
+      background: var(--secondary-glow);
+      border: 1px solid var(--secondary);
+    }
+
+    .si-danger {
+      background: rgba(220, 38, 38, 0.1);
+      border: 0.5px solid rgba(220, 38, 38, 0.3);
+    }
+
+    .setting-text {
+      flex: 1;
+    }
+
+    .setting-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 0.01em;
+    }
+
+    .setting-desc {
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+      letter-spacing: 0.02em;
+    }
+
+    .setting-chevron {
+      color: var(--text-muted);
+      opacity: 0.4;
+    }
+
+    /* Toggle */
+    .toggle {
+      width: 36px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 9px;
+      position: relative;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle-knob {
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      width: 14px;
+      height: 14px;
+      background: var(--bg-start);
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+
+    /* ══ COPY TOAST ══ */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1px solid var(--primary);
+      border-radius: 24px;
+      padding: 10px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.08em;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9999;
+      pointer-events: none;
+      white-space: nowrap;
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ══ GRADIENTS FOR CARDS ══ */
+    .g-portrait {
+      background: linear-gradient(150deg, #1a0820, #0a0a1a);
+    }
+
+    .g-fantasy {
+      background: linear-gradient(150deg, #1a1200, #0f0f1e);
+    }
+
+    .g-arch {
+      background: linear-gradient(150deg, #0a1a1a, #0a0a1a);
+    }
+
+    .g-abstract {
+      background: linear-gradient(150deg, #1e0a1a, #0a0a1a);
+    }
+
+    .g-nature {
+      background: linear-gradient(150deg, #0a1a0a, #0a0a1a);
+    }
+
+    .g-cinema {
+      background: linear-gradient(150deg, #1a0a0a, #0a0a1a);
+    }
+
+    .g-sci {
+      background: linear-gradient(150deg, #001828, #0a0a1a);
+    }
+
+    .g-dark {
+      background: linear-gradient(150deg, #080812, #141428);
+    }
+
+    .g-myth {
+      background: linear-gradient(150deg, #1a0028, #0a0a1a);
+    }
+
+    /* ══ SVG ICONS ══ */
+    svg.icon {
+      display: block;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="phone" id="app">
+  <div class="phone" id="app">
 
-  <!-- ════════════ SCREEN: HOME ════════════ -->
-  <div class="screen active" id="screen-home">
-    <div class="status-bar">
-      <span>9:41</span>
-      <div class="status-right">
-        <div class="status-dot"></div>
-        <div class="status-dot" style="opacity:0.4"></div>
-        <div class="status-dot" style="opacity:0.2"></div>
-        <span style="margin-left:2px">●●</span>
+    <!-- ════════════ SCREEN: HOME ════════════ -->
+    <div class="screen active" id="screen-home">
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="status-right">
+          <div class="status-dot"></div>
+          <div class="status-dot" style="opacity:0.4"></div>
+          <div class="status-dot" style="opacity:0.2"></div>
+          <span style="margin-left:2px">●●</span>
+        </div>
+      </div>
+
+      <div class="scroll-content">
+        <!-- Hero -->
+        <div class="home-hero">
+          <div class="hero-orb1"></div>
+          <div class="hero-orb2"></div>
+          <div class="hero-badge-wrap">
+            <div class="hero-eyebrow">
+              <span class="hero-star">★</span> Sapphire Collection
+            </div>
+          </div>
+          <div class="hero-heading">Craft<br>Perfect <em>Prompts</em></div>
+          <div class="hero-sub">47 new premium prompts added today</div>
+          <div class="hero-ctas">
+            <button class="btn-primary" onclick="goTo('categories')">Explore Now</button>
+            <button class="btn-ghost" onclick="goTo('detail')">Try Prompt</button>
+          </div>
+        </div>
+
+        <!-- Collections -->
+        <div class="section-head">
+          <span class="section-title">Collections</span>
+          <span class="section-see-all" onclick="goTo('categories')">See all →</span>
+        </div>
+        <div class="h-scroll">
+          <div class="cat-chip" onclick="goTo('subcategory')">
+            <div class="cat-chip-img g-portrait">🎨</div>
+            <div class="cat-chip-label">Portrait</div>
+          </div>
+          <div class="cat-chip" onclick="goTo('subcategory')">
+            <div class="cat-chip-img g-fantasy">✨</div>
+            <div class="cat-chip-label">Fantasy</div>
+          </div>
+          <div class="cat-chip" onclick="goTo('subcategory')">
+            <div class="cat-chip-img g-arch">🏛️</div>
+            <div class="cat-chip-label">Arch</div>
+          </div>
+          <div class="cat-chip" onclick="goTo('subcategory')">
+            <div class="cat-chip-img g-abstract">🌀</div>
+            <div class="cat-chip-label">Abstract</div>
+          </div>
+          <div class="cat-chip" onclick="goTo('subcategory')">
+            <div class="cat-chip-img g-sci">🚀</div>
+            <div class="cat-chip-label">Sci-Fi</div>
+          </div>
+        </div>
+
+        <!-- Featured Prompt -->
+        <div class="section-head" style="margin-top:6px">
+          <span class="section-title">✦ Featured Prompt</span>
+        </div>
+        <div class="featured-strip">
+          <div class="strip-label">Today's Royal Pick</div>
+          <div class="strip-prompt">"A luminous celestial empress seated on a throne of crystallized starlight, her
+            robes woven from the fabric of galaxies..."</div>
+          <div class="strip-footer">
+            <span class="strip-tag">Fantasy · Midjourney v6</span>
+            <button class="strip-copy" onclick="copyPrompt(this)">Copy ✦</button>
+          </div>
+        </div>
+
+        <!-- Trending -->
+        <div class="section-head" style="margin-top:4px">
+          <span class="section-title">Trending</span>
+          <span class="section-see-all">View all</span>
+        </div>
+        <div class="h-scroll" style="padding-bottom:6px">
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-dark">🌌</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Cinematic</div>
+              <div class="trend-name">Ethereal Galaxy</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-fantasy">🔥</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Fantasy</div>
+              <div class="trend-name">Dark Phoenix</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-arch">🏯</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Architecture</div>
+              <div class="trend-name">Gothic Palace</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-nature">🌿</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Nature</div>
+              <div class="trend-name">Mystic Forest</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item active" onclick="goTo('home')">
+          <div class="nav-icon-wrap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#c9a84c"
+                stroke-width="1.5" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <span class="nav-label" style="color:var(--gold)">Home</span>
+        </div>
+        <div class="nav-item" onclick="goTo('categories')">
+          <div class="nav-icon-wrap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+            </svg>
+          </div>
+          <span class="nav-label">Discover</span>
+        </div>
+        <div class="nav-item" onclick="goTo('favorites')">
+          <div class="nav-icon-wrap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z"
+                stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <span class="nav-label">Saved</span>
+        </div>
+        <div class="nav-item" onclick="goTo('profile')">
+          <div class="nav-icon-wrap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5" />
+              <path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg>
+          </div>
+          <span class="nav-label">Profile</span>
+        </div>
       </div>
     </div>
 
-    <div class="scroll-content">
-      <!-- Hero -->
-      <div class="home-hero">
-        <div class="hero-orb1"></div>
-        <div class="hero-orb2"></div>
-        <div class="hero-badge-wrap">
-          <div class="hero-eyebrow">
-            <span class="hero-star">★</span> Royal Collection
-          </div>
-        </div>
-        <div class="hero-heading">Craft<br>Perfect <em>Prompts</em></div>
-        <div class="hero-sub">47 new premium prompts added today</div>
-        <div class="hero-ctas">
-          <button class="btn-primary" onclick="goTo('categories')">Explore Now</button>
-          <button class="btn-ghost" onclick="goTo('detail')">Try Prompt</button>
-        </div>
+    <!-- ════════════ SCREEN: CATEGORIES ════════════ -->
+    <div class="screen" id="screen-categories">
+      <div class="status-bar"><span>9:41</span>
+        <div class="status-right"><span>●●</span></div>
       </div>
 
-      <!-- Collections -->
-      <div class="section-head">
-        <span class="section-title">Collections</span>
-        <span class="section-see-all" onclick="goTo('categories')">See all →</span>
-      </div>
-      <div class="h-scroll">
-        <div class="cat-chip" onclick="goTo('subcategory')">
-          <div class="cat-chip-img g-portrait">🎨</div>
-          <div class="cat-chip-label">Portrait</div>
+      <div class="scroll-content">
+        <div class="cat-screen-head">
+          <div class="cat-screen-title">Discover</div>
+          <div class="gold-badge">340 prompts</div>
         </div>
-        <div class="cat-chip" onclick="goTo('subcategory')">
-          <div class="cat-chip-img g-fantasy">✨</div>
-          <div class="cat-chip-label">Fantasy</div>
+
+        <div class="search-bar">
+          <svg class="search-svg" width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="#6a6080" stroke-width="1.5" />
+            <path d="M21 21L16.7 16.7" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <input type="text" placeholder="Search categories, moods, styles...">
+          <div class="filter-pill">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+              <path d="M3 6H21M6 12H18M9 18H15" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            Filter
+          </div>
         </div>
-        <div class="cat-chip" onclick="goTo('subcategory')">
-          <div class="cat-chip-img g-arch">🏛️</div>
-          <div class="cat-chip-label">Arch</div>
+
+        <div class="filter-chips">
+          <button class="fchip active" onclick="setFilter(this)">All</button>
+          <button class="fchip" onclick="setFilter(this)">Dark</button>
+          <button class="fchip" onclick="setFilter(this)">Ethereal</button>
+          <button class="fchip" onclick="setFilter(this)">Cinematic</button>
+          <button class="fchip" onclick="setFilter(this)">Surreal</button>
+          <button class="fchip" onclick="setFilter(this)">Minimal</button>
         </div>
-        <div class="cat-chip" onclick="goTo('subcategory')">
-          <div class="cat-chip-img g-abstract">🌀</div>
-          <div class="cat-chip-label">Abstract</div>
+
+        <div class="cat-grid">
+          <div class="cat-card" onclick="goTo('subcategory')">
+            <div class="cat-card-img g-portrait">
+              <div class="cat-card-shimmer"></div>🎨
+            </div>
+            <div class="cat-card-info">
+              <div class="cat-card-name">Portrait</div>
+              <div class="cat-card-count">64 prompts</div>
+              <div class="cat-card-bar">
+                <div class="cat-card-bar-fill" style="width:76%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('subcategory')">
+            <div class="cat-card-img g-fantasy">
+              <div class="cat-card-shimmer"></div>✨
+            </div>
+            <div class="cat-card-info">
+              <div class="cat-card-name">Fantasy</div>
+              <div class="cat-card-count">48 prompts</div>
+              <div class="cat-card-bar">
+                <div class="cat-card-bar-fill" style="width:57%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('subcategory')">
+            <div class="cat-card-img g-arch">
+              <div class="cat-card-shimmer"></div>🏛️
+            </div>
+            <div class="cat-card-info">
+              <div class="cat-card-name">Architecture</div>
+              <div class="cat-card-count">37 prompts</div>
+              <div class="cat-card-bar">
+                <div class="cat-card-bar-fill" style="width:44%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('subcategory')">
+            <div class="cat-card-img g-abstract">
+              <div class="cat-card-shimmer"></div>🌀
+            </div>
+            <div class="cat-card-info">
+              <div class="cat-card-name">Abstract</div>
+              <div class="cat-card-count">52 prompts</div>
+              <div class="cat-card-bar">
+                <div class="cat-card-bar-fill" style="width:62%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('subcategory')">
+            <div class="cat-card-img g-nature">
+              <div class="cat-card-shimmer"></div>🌿
+            </div>
+            <div class="cat-card-info">
+              <div class="cat-card-name">Nature</div>
+              <div class="cat-card-count">29 prompts</div>
+              <div class="cat-card-bar">
+                <div class="cat-card-bar-fill" style="width:35%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('subcategory')">
+            <div class="cat-card-img g-cinema">
+              <div class="cat-card-shimmer"></div>🎬
+            </div>
+            <div class="cat-card-info">
+              <div class="cat-card-name">Cinematic</div>
+              <div class="cat-card-count">44 prompts</div>
+              <div class="cat-card-bar">
+                <div class="cat-card-bar-fill" style="width:52%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('subcategory')">
+            <div class="cat-card-img g-sci">
+              <div class="cat-card-shimmer"></div>🚀
+            </div>
+            <div class="cat-card-info">
+              <div class="cat-card-name">Sci-Fi</div>
+              <div class="cat-card-count">31 prompts</div>
+              <div class="cat-card-bar">
+                <div class="cat-card-bar-fill" style="width:37%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('subcategory')">
+            <div class="cat-card-img g-myth">
+              <div class="cat-card-shimmer"></div>🔮
+            </div>
+            <div class="cat-card-info">
+              <div class="cat-card-name">Mystical</div>
+              <div class="cat-card-count">55 prompts</div>
+              <div class="cat-card-bar">
+                <div class="cat-card-bar-fill" style="width:65%"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cat-chip" onclick="goTo('subcategory')">
-          <div class="cat-chip-img g-sci">🚀</div>
-          <div class="cat-chip-label">Sci-Fi</div>
-        </div>
+        <div style="height:10px"></div>
       </div>
 
-      <!-- Featured Prompt -->
-      <div class="section-head" style="margin-top:6px">
-        <span class="section-title">✦ Featured Prompt</span>
-      </div>
-      <div class="featured-strip">
-        <div class="strip-label">Today's Royal Pick</div>
-        <div class="strip-prompt">"A luminous celestial empress seated on a throne of crystallized starlight, her robes woven from the fabric of galaxies..."</div>
-        <div class="strip-footer">
-          <span class="strip-tag">Fantasy · Midjourney v6</span>
-          <button class="strip-copy" onclick="copyPrompt(this)">Copy ✦</button>
-        </div>
-      </div>
-
-      <!-- Trending -->
-      <div class="section-head" style="margin-top:4px">
-        <span class="section-title">Trending</span>
-        <span class="section-see-all">View all</span>
-      </div>
-      <div class="h-scroll" style="padding-bottom:6px">
-        <div class="trend-card" onclick="goTo('detail')">
-          <div class="trend-bg g-dark">🌌</div>
-          <div class="trend-overlay">
-            <div class="trend-tag">Cinematic</div>
-            <div class="trend-name">Ethereal Galaxy</div>
+      <div class="bottom-nav">
+        <div class="nav-item" onclick="goTo('home')">
+          <div class="nav-icon-wrap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080"
+                stroke-width="1.5" stroke-linejoin="round" />
+            </svg>
           </div>
+          <span class="nav-label">Home</span>
         </div>
-        <div class="trend-card" onclick="goTo('detail')">
-          <div class="trend-bg g-fantasy">🔥</div>
-          <div class="trend-overlay">
-            <div class="trend-tag">Fantasy</div>
-            <div class="trend-name">Dark Phoenix</div>
+        <div class="nav-item active" onclick="goTo('categories')">
+          <div class="nav-icon-wrap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5" />
+            </svg>
           </div>
+          <span class="nav-label" style="color:var(--gold)">Discover</span>
         </div>
-        <div class="trend-card" onclick="goTo('detail')">
-          <div class="trend-bg g-arch">🏯</div>
-          <div class="trend-overlay">
-            <div class="trend-tag">Architecture</div>
-            <div class="trend-name">Gothic Palace</div>
+        <div class="nav-item" onclick="goTo('favorites')">
+          <div class="nav-icon-wrap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z"
+                stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round" />
+            </svg>
           </div>
+          <span class="nav-label">Saved</span>
         </div>
-        <div class="trend-card" onclick="goTo('detail')">
-          <div class="trend-bg g-nature">🌿</div>
-          <div class="trend-overlay">
-            <div class="trend-tag">Nature</div>
-            <div class="trend-name">Mystic Forest</div>
+        <div class="nav-item" onclick="goTo('profile')">
+          <div class="nav-icon-wrap">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5" />
+              <path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg>
           </div>
+          <span class="nav-label">Profile</span>
         </div>
       </div>
     </div>
 
-    <div class="bottom-nav">
-      <div class="nav-item active" onclick="goTo('home')">
-        <div class="nav-icon-wrap">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-            <path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#c9a84c" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- ════════════ SCREEN: SUBCATEGORY ════════════ -->
+    <div class="screen" id="screen-subcategory">
+      <div class="status-bar"><span>9:41</span>
+        <div class="status-right"><span>●●</span></div>
+      </div>
+
+      <div class="page-header">
+        <div class="back-btn" onclick="goBack()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M15 19L8 12L15 5" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </div>
-        <span class="nav-label" style="color:var(--gold)">Home</span>
-      </div>
-      <div class="nav-item" onclick="goTo('categories')">
-        <div class="nav-icon-wrap">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/>
-            <rect x="14" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/>
-            <rect x="3" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/>
-            <rect x="14" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/>
-          </svg>
+        <div class="page-header-text">
+          <div class="page-title">Fantasy</div>
+          <div class="page-subtitle">48 premium prompts</div>
         </div>
-        <span class="nav-label">Discover</span>
+        <div class="gold-badge">★ Top Collection</div>
       </div>
-      <div class="nav-item" onclick="goTo('favorites')">
-        <div class="nav-icon-wrap">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-            <path d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/>
-          </svg>
+
+      <div class="scroll-content" style="padding-top:0">
+        <div class="sub-banner g-fantasy" onclick="goTo('subcategory')">
+          <div class="sub-banner-emoji">✨</div>
+          <div class="sub-banner-overlay"></div>
+          <div class="sub-banner-chips">
+            <div class="sub-chip active">All</div>
+            <div class="sub-chip">Dark</div>
+            <div class="sub-chip">Mythical</div>
+            <div class="sub-chip">Celestial</div>
+            <div class="sub-chip">Elemental</div>
+          </div>
         </div>
-        <span class="nav-label">Saved</span>
+
+        <div class="sub-meta">
+          <span class="sub-count">Showing 12 of 48</span>
+          <button class="sub-sort">Sort ↕</button>
+        </div>
+
+        <div class="sub-grid">
+          <div class="sub-photo g-fantasy" onclick="goTo('detail')">🐉<div class="sub-photo-badge">✦</div>
+          </div>
+          <div class="sub-photo g-portrait" onclick="goTo('detail')">👁️</div>
+          <div class="sub-photo" style="background:linear-gradient(150deg,#1a1a00,#0a0a1a)" onclick="goTo('detail')">⚡
+            <div class="sub-photo-badge">✦</div>
+          </div>
+          <div class="sub-photo" style="background:linear-gradient(150deg,#001a1a,#0a0a1a)" onclick="goTo('detail')">🌊
+          </div>
+          <div class="sub-photo g-cinema" onclick="goTo('detail')">🌙<div class="sub-photo-badge">✦</div>
+          </div>
+          <div class="sub-photo g-abstract" onclick="goTo('detail')">💫</div>
+          <div class="sub-photo" style="background:linear-gradient(150deg,#1a0010,#0a0a1a)" onclick="goTo('detail')">🦋
+            <div class="sub-photo-badge">✦</div>
+          </div>
+          <div class="sub-photo g-nature" onclick="goTo('detail')">🍄</div>
+          <div class="sub-photo g-portrait" onclick="goTo('detail')">🔮<div class="sub-photo-badge">✦</div>
+          </div>
+          <div class="sub-photo g-dark" onclick="goTo('detail')">🌑</div>
+          <div class="sub-photo g-myth" onclick="goTo('detail')">🦅<div class="sub-photo-badge">✦</div>
+          </div>
+          <div class="sub-photo g-fantasy" onclick="goTo('detail')">🗡️</div>
+        </div>
+        <div style="height:10px"></div>
       </div>
-      <div class="nav-item" onclick="goTo('profile')">
-        <div class="nav-icon-wrap">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5"/>
-            <path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+
+      <div class="bottom-nav">
+        <div class="nav-item" onclick="goTo('home')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080"
+                stroke-width="1.5" stroke-linejoin="round" />
+            </svg></div><span class="nav-label">Home</span>
         </div>
-        <span class="nav-label">Profile</span>
+        <div class="nav-item active" onclick="goTo('categories')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5" />
+            </svg></div><span class="nav-label" style="color:var(--gold)">Discover</span>
+        </div>
+        <div class="nav-item" onclick="goTo('favorites')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z"
+                stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round" />
+            </svg></div><span class="nav-label">Saved</span>
+        </div>
+        <div class="nav-item" onclick="goTo('profile')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5" />
+              <path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg></div><span class="nav-label">Profile</span>
+        </div>
       </div>
     </div>
+
+    <!-- ════════════ SCREEN: PHOTO DETAIL ════════════ -->
+    <div class="screen" id="screen-detail">
+      <div class="scroll-content" style="padding-bottom:80px">
+        <div class="photo-full-wrap">
+          <div class="photo-full g-fantasy">🐉</div>
+          <div class="photo-gradient"></div>
+          <div class="photo-top-actions">
+            <div class="photo-back-btn" onclick="goBack()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M15 19L8 12L15 5" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div class="photo-side-actions">
+              <div class="photo-action-btn loved" id="heart-btn" onclick="toggleHeart()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#e84393">
+                  <path
+                    d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z"
+                    stroke="#e84393" stroke-width="1.5" />
+                </svg>
+              </div>
+              <div class="photo-action-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8.59 13.51L15.42 17.49M15.41 6.51L8.59 10.49M21 5C21 6.7 19.7 8 18 8C16.3 8 15 6.7 15 5C15 3.3 16.3 2 18 2C19.7 2 21 3.3 21 5ZM9 12C9 13.7 7.7 15 6 15C4.3 15 3 13.7 3 12C3 10.3 4.3 9 6 9C7.7 9 9 10.3 9 12ZM21 19C21 20.7 19.7 22 18 22C16.3 22 15 20.7 15 19C15 17.3 16.3 16 18 16C19.7 16 21 17.3 21 19Z"
+                    stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="photo-info">
+            <div class="photo-cat-tag">Fantasy · Dark</div>
+            <div class="photo-name">Ancient Dragon</div>
+            <div class="photo-by">Royal Collection · Vol. III</div>
+          </div>
+        </div>
+
+        <div class="prompt-panel">
+          <div class="prompt-panel-header">
+            <div class="prompt-label">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                  fill="#c9a84c" />
+              </svg>
+              AI Prompt
+            </div>
+            <button class="prompt-inline-copy" onclick="copyPrompt(this)">Copy ✦</button>
+          </div>
+          <div class="prompt-text">
+            "A majestic ancient dragon perched atop a storm-swept mountain, scales shimmering with deep violet and gold
+            iridescence, dramatic cinematic lighting, volumetric god rays, 8K ultra-detailed, hyperrealistic fantasy art
+            style, masterpiece quality..."
+          </div>
+          <div class="prompt-tools">
+            <div class="ptool">Midjourney v6</div>
+            <div class="ptool">DALL-E 3</div>
+            <div class="ptool">Stable Diff</div>
+          </div>
+        </div>
+
+        <div class="detail-actions">
+          <button class="btn-primary" style="flex:1;text-align:center" onclick="copyPrompt(this)">✦ Copy Prompt</button>
+          <button class="btn-ghost" style="flex:1;text-align:center">Use Now →</button>
+        </div>
+
+        <div class="detail-stats">
+          <span class="detail-saves">1,248 saves · 4.9 ★ · Fantasy</span>
+          <span class="detail-share">Share →</span>
+        </div>
+
+        <!-- Related -->
+        <div class="section-head" style="margin-top:8px">
+          <span class="section-title">Related Prompts</span>
+        </div>
+        <div class="h-scroll" style="padding-bottom:6px">
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-myth">🦅</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Mythical</div>
+              <div class="trend-name">Storm Eagle</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-portrait">🌙</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Dark</div>
+              <div class="trend-name">Night Witch</div>
+            </div>
+          </div>
+          <div class="trend-card" onclick="goTo('detail')">
+            <div class="trend-bg g-abstract">💫</div>
+            <div class="trend-overlay">
+              <div class="trend-tag">Celestial</div>
+              <div class="trend-name">Void Spiral</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item" onclick="goTo('home')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080"
+                stroke-width="1.5" stroke-linejoin="round" />
+            </svg></div><span class="nav-label">Home</span>
+        </div>
+        <div class="nav-item" onclick="goTo('categories')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+            </svg></div><span class="nav-label">Discover</span>
+        </div>
+        <div class="nav-item" onclick="goTo('favorites')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z"
+                stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round" />
+            </svg></div><span class="nav-label">Saved</span>
+        </div>
+        <div class="nav-item" onclick="goTo('profile')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5" />
+              <path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg></div><span class="nav-label">Profile</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ SCREEN: FAVORITES ════════════ -->
+    <div class="screen" id="screen-favorites">
+      <div class="status-bar"><span>9:41</span>
+        <div class="status-right"><span>●●</span></div>
+      </div>
+
+      <div class="scroll-content">
+        <div class="fav-header">
+          <div>
+            <div class="fav-title">My <span>Vault</span></div>
+            <div style="font-size:11px;color:var(--ivory-muted);margin-top:2px;letter-spacing:0.04em">Your saved prompts
+            </div>
+          </div>
+          <div class="gold-badge">♥ 24 saved</div>
+        </div>
+
+        <div class="filter-chips">
+          <button class="fchip active" onclick="setFilter(this)">All</button>
+          <button class="fchip" onclick="setFilter(this)">Fantasy</button>
+          <button class="fchip" onclick="setFilter(this)">Portrait</button>
+          <button class="fchip" onclick="setFilter(this)">Abstract</button>
+          <button class="fchip" onclick="setFilter(this)">Nature</button>
+        </div>
+
+        <div class="fav-masonry">
+          <div class="fav-col">
+            <div class="fav-card" onclick="goTo('detail')">
+              <div class="fav-card-img fav-img-tall g-fantasy"><span>🐉</span>
+                <div class="fav-heart-badge">♥</div>
+              </div>
+              <div class="fav-card-body">
+                <div class="fav-card-name">Ancient Dragon</div>
+                <div class="fav-preview">"Majestic dragon perched on storm-swept mountain, violet and gold scales..."
+                </div>
+                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
+              </div>
+            </div>
+            <div class="fav-card" onclick="goTo('detail')">
+              <div class="fav-card-img fav-img-short g-abstract"><span>🌀</span>
+                <div class="fav-heart-badge">♥</div>
+              </div>
+              <div class="fav-card-body">
+                <div class="fav-card-name">Void Spiral</div>
+                <div class="fav-preview">"Cosmic vortex with luminous neon tendrils..."</div>
+                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
+              </div>
+            </div>
+            <div class="fav-card" onclick="goTo('detail')">
+              <div class="fav-card-img fav-img-short g-nature"><span>🌿</span>
+                <div class="fav-heart-badge">♥</div>
+              </div>
+              <div class="fav-card-body">
+                <div class="fav-card-name">Mystic Grove</div>
+                <div class="fav-preview">"Ancient forest lit by bioluminescent flora..."</div>
+                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
+              </div>
+            </div>
+          </div>
+          <div class="fav-col">
+            <div class="fav-card" onclick="goTo('detail')">
+              <div class="fav-card-img fav-img-short g-portrait"><span>🎨</span>
+                <div class="fav-heart-badge">♥</div>
+              </div>
+              <div class="fav-card-body">
+                <div class="fav-card-name">Dark Empress</div>
+                <div class="fav-preview">"Regal portrait, obsidian crown, piercing violet gaze..."</div>
+                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
+              </div>
+            </div>
+            <div class="fav-card" onclick="goTo('detail')">
+              <div class="fav-card-img fav-img-tall g-dark"><span>🌌</span>
+                <div class="fav-heart-badge">♥</div>
+              </div>
+              <div class="fav-card-body">
+                <div class="fav-card-name">Star Requiem</div>
+                <div class="fav-preview">"Dying star collapsing into galactic nebula storm, supernova light..."</div>
+                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
+              </div>
+            </div>
+            <div class="fav-card" onclick="goTo('detail')">
+              <div class="fav-card-img fav-img-short g-myth"><span>🔮</span>
+                <div class="fav-heart-badge">♥</div>
+              </div>
+              <div class="fav-card-body">
+                <div class="fav-card-name">Oracle Vision</div>
+                <div class="fav-preview">"Ancient seer surrounded by prophetic crystal spheres..."</div>
+                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="height:10px"></div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item" onclick="goTo('home')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080"
+                stroke-width="1.5" stroke-linejoin="round" />
+            </svg></div><span class="nav-label">Home</span>
+        </div>
+        <div class="nav-item" onclick="goTo('categories')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+            </svg></div><span class="nav-label">Discover</span>
+        </div>
+        <div class="nav-item active" onclick="goTo('favorites')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z"
+                fill="#e84393" stroke="#e84393" stroke-width="1.5" />
+            </svg></div><span class="nav-label" style="color:var(--gold)">Saved</span>
+        </div>
+        <div class="nav-item" onclick="goTo('profile')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5" />
+              <path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg></div><span class="nav-label">Profile</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ SCREEN: PROFILE ════════════ -->
+    <div class="screen" id="screen-profile">
+      <div class="status-bar" style="position:relative;z-index:2"><span>9:41</span>
+        <div class="status-right"><span>●●</span></div>
+      </div>
+
+      <div class="scroll-content" style="padding-top:0">
+        <div class="profile-hero">
+          <div class="profile-ring1"></div>
+          <div class="profile-ring2"></div>
+          <div class="avatar">A</div>
+          <div class="profile-info">
+            <div class="profile-name">Aryan Shah</div>
+            <div class="profile-tier">★ Royal Member</div>
+          </div>
+          <div class="edit-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M11 4H4C3.4 4 3 4.4 3 5V20C3 20.6 3.4 21 4 21H19C19.6 21 20 20.6 20 20V13M18.5 2.5C19.3 1.7 20.7 1.7 21.5 2.5C22.3 3.3 22.3 4.7 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z"
+                stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-cell">
+            <div class="stat-num">247</div>
+            <div class="stat-lbl">Used</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">24</div>
+            <div class="stat-lbl">Saved</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">12</div>
+            <div class="stat-lbl">Shared</div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-label">Preferences</div>
+          <div class="settings-group">
+            <div class="setting-row">
+              <div class="setting-icon si-gold">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="#c9a84c" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="setting-text">
+                <div class="setting-name">Dark Theme</div>
+                <div class="setting-desc">Royal obsidian mode active</div>
+              </div>
+              <div class="toggle">
+                <div class="toggle-knob"></div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-icon si-gold">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                  <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"
+                    stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="setting-text">
+                <div class="setting-name">Notifications</div>
+                <div class="setting-desc">New drops & trending alerts</div>
+              </div>
+              <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="settings-section-label">Account</div>
+          <div class="settings-group">
+            <div class="setting-row" onclick="goTo('favorites')">
+              <div class="setting-icon si-violet">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z"
+                    stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="setting-text">
+                <div class="setting-name">Saved Prompts</div>
+                <div class="setting-desc">24 prompts in your vault</div>
+              </div>
+              <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="setting-row">
+              <div class="setting-icon si-gold">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                    stroke="#c9a84c" stroke-width="1.5" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="setting-text">
+                <div class="setting-name">Royal Membership</div>
+                <div class="setting-desc">Premium · Renews May 2026</div>
+              </div>
+              <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="setting-row">
+              <div class="setting-icon si-violet">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="3" stroke="#a78bfa" stroke-width="1.5" />
+                  <path
+                    d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"
+                    stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+              </div>
+              <div class="setting-text">
+                <div class="setting-name">Account Settings</div>
+                <div class="setting-desc">Privacy, data & security</div>
+              </div>
+              <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="setting-row" style="border-color:rgba(220,38,38,0.2)">
+              <div class="setting-icon si-danger">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="#f87171"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="setting-text">
+                <div class="setting-name" style="color:#f87171">Sign Out</div>
+                <div class="setting-desc">End current session</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item" onclick="goTo('home')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080"
+                stroke-width="1.5" stroke-linejoin="round" />
+            </svg></div><span class="nav-label">Home</span>
+        </div>
+        <div class="nav-item" onclick="goTo('categories')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5" />
+            </svg></div><span class="nav-label">Discover</span>
+        </div>
+        <div class="nav-item" onclick="goTo('favorites')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z"
+                stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round" />
+            </svg></div><span class="nav-label">Saved</span>
+        </div>
+        <div class="nav-item active" onclick="goTo('profile')">
+          <div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="4" stroke="#c9a84c" stroke-width="1.5" />
+              <path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#c9a84c" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg></div><span class="nav-label" style="color:var(--gold)">Profile</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">✦ Prompt copied to clipboard</div>
+
   </div>
 
-  <!-- ════════════ SCREEN: CATEGORIES ════════════ -->
-  <div class="screen" id="screen-categories">
-    <div class="status-bar"><span>9:41</span><div class="status-right"><span>●●</span></div></div>
+  <script>
+    let currentScreen = 'home';
+    let screenHistory = [];
 
-    <div class="scroll-content">
-      <div class="cat-screen-head">
-        <div class="cat-screen-title">Discover</div>
-        <div class="gold-badge">340 prompts</div>
-      </div>
+    const screens = ['home', 'categories', 'subcategory', 'detail', 'favorites', 'profile'];
 
-      <div class="search-bar">
-        <svg class="search-svg" width="14" height="14" viewBox="0 0 24 24" fill="none">
-          <circle cx="11" cy="11" r="8" stroke="#6a6080" stroke-width="1.5"/>
-          <path d="M21 21L16.7 16.7" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <input type="text" placeholder="Search categories, moods, styles...">
-        <div class="filter-pill">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M3 6H21M6 12H18M9 18H15" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/></svg>
-          Filter
-        </div>
-      </div>
+    function goTo(id) {
+      if (id === currentScreen) return;
+      const current = document.getElementById('screen-' + currentScreen);
+      const next = document.getElementById('screen-' + id);
+      if (!next) return;
 
-      <div class="filter-chips">
-        <button class="fchip active" onclick="setFilter(this)">All</button>
-        <button class="fchip" onclick="setFilter(this)">Dark</button>
-        <button class="fchip" onclick="setFilter(this)">Ethereal</button>
-        <button class="fchip" onclick="setFilter(this)">Cinematic</button>
-        <button class="fchip" onclick="setFilter(this)">Surreal</button>
-        <button class="fchip" onclick="setFilter(this)">Minimal</button>
-      </div>
+      screenHistory.push(currentScreen);
+      current.classList.remove('active');
+      current.classList.add('prev');
+      next.style.transform = 'translateX(30px)';
+      next.style.opacity = '0';
+      next.classList.add('active');
 
-      <div class="cat-grid">
-        <div class="cat-card" onclick="goTo('subcategory')">
-          <div class="cat-card-img g-portrait"><div class="cat-card-shimmer"></div>🎨</div>
-          <div class="cat-card-info">
-            <div class="cat-card-name">Portrait</div>
-            <div class="cat-card-count">64 prompts</div>
-            <div class="cat-card-bar"><div class="cat-card-bar-fill" style="width:76%"></div></div>
-          </div>
-        </div>
-        <div class="cat-card" onclick="goTo('subcategory')">
-          <div class="cat-card-img g-fantasy"><div class="cat-card-shimmer"></div>✨</div>
-          <div class="cat-card-info">
-            <div class="cat-card-name">Fantasy</div>
-            <div class="cat-card-count">48 prompts</div>
-            <div class="cat-card-bar"><div class="cat-card-bar-fill" style="width:57%"></div></div>
-          </div>
-        </div>
-        <div class="cat-card" onclick="goTo('subcategory')">
-          <div class="cat-card-img g-arch"><div class="cat-card-shimmer"></div>🏛️</div>
-          <div class="cat-card-info">
-            <div class="cat-card-name">Architecture</div>
-            <div class="cat-card-count">37 prompts</div>
-            <div class="cat-card-bar"><div class="cat-card-bar-fill" style="width:44%"></div></div>
-          </div>
-        </div>
-        <div class="cat-card" onclick="goTo('subcategory')">
-          <div class="cat-card-img g-abstract"><div class="cat-card-shimmer"></div>🌀</div>
-          <div class="cat-card-info">
-            <div class="cat-card-name">Abstract</div>
-            <div class="cat-card-count">52 prompts</div>
-            <div class="cat-card-bar"><div class="cat-card-bar-fill" style="width:62%"></div></div>
-          </div>
-        </div>
-        <div class="cat-card" onclick="goTo('subcategory')">
-          <div class="cat-card-img g-nature"><div class="cat-card-shimmer"></div>🌿</div>
-          <div class="cat-card-info">
-            <div class="cat-card-name">Nature</div>
-            <div class="cat-card-count">29 prompts</div>
-            <div class="cat-card-bar"><div class="cat-card-bar-fill" style="width:35%"></div></div>
-          </div>
-        </div>
-        <div class="cat-card" onclick="goTo('subcategory')">
-          <div class="cat-card-img g-cinema"><div class="cat-card-shimmer"></div>🎬</div>
-          <div class="cat-card-info">
-            <div class="cat-card-name">Cinematic</div>
-            <div class="cat-card-count">44 prompts</div>
-            <div class="cat-card-bar"><div class="cat-card-bar-fill" style="width:52%"></div></div>
-          </div>
-        </div>
-        <div class="cat-card" onclick="goTo('subcategory')">
-          <div class="cat-card-img g-sci"><div class="cat-card-shimmer"></div>🚀</div>
-          <div class="cat-card-info">
-            <div class="cat-card-name">Sci-Fi</div>
-            <div class="cat-card-count">31 prompts</div>
-            <div class="cat-card-bar"><div class="cat-card-bar-fill" style="width:37%"></div></div>
-          </div>
-        </div>
-        <div class="cat-card" onclick="goTo('subcategory')">
-          <div class="cat-card-img g-myth"><div class="cat-card-shimmer"></div>🔮</div>
-          <div class="cat-card-info">
-            <div class="cat-card-name">Mystical</div>
-            <div class="cat-card-count">55 prompts</div>
-            <div class="cat-card-bar"><div class="cat-card-bar-fill" style="width:65%"></div></div>
-          </div>
-        </div>
-      </div>
-      <div style="height:10px"></div>
-    </div>
-
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="goTo('home')">
-        <div class="nav-icon-wrap">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <span class="nav-label">Home</span>
-      </div>
-      <div class="nav-item active" onclick="goTo('categories')">
-        <div class="nav-icon-wrap">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5"/></svg>
-        </div>
-        <span class="nav-label" style="color:var(--gold)">Discover</span>
-      </div>
-      <div class="nav-item" onclick="goTo('favorites')">
-        <div class="nav-icon-wrap">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <span class="nav-label">Saved</span>
-      </div>
-      <div class="nav-item" onclick="goTo('profile')">
-        <div class="nav-icon-wrap">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5"/><path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <span class="nav-label">Profile</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════ SCREEN: SUBCATEGORY ════════════ -->
-  <div class="screen" id="screen-subcategory">
-    <div class="status-bar"><span>9:41</span><div class="status-right"><span>●●</span></div></div>
-
-    <div class="page-header">
-      <div class="back-btn" onclick="goBack()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 19L8 12L15 5" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="page-header-text">
-        <div class="page-title">Fantasy</div>
-        <div class="page-subtitle">48 premium prompts</div>
-      </div>
-      <div class="gold-badge">★ Top Collection</div>
-    </div>
-
-    <div class="scroll-content" style="padding-top:0">
-      <div class="sub-banner g-fantasy" onclick="goTo('subcategory')">
-        <div class="sub-banner-emoji">✨</div>
-        <div class="sub-banner-overlay"></div>
-        <div class="sub-banner-chips">
-          <div class="sub-chip active">All</div>
-          <div class="sub-chip">Dark</div>
-          <div class="sub-chip">Mythical</div>
-          <div class="sub-chip">Celestial</div>
-          <div class="sub-chip">Elemental</div>
-        </div>
-      </div>
-
-      <div class="sub-meta">
-        <span class="sub-count">Showing 12 of 48</span>
-        <button class="sub-sort">Sort ↕</button>
-      </div>
-
-      <div class="sub-grid">
-        <div class="sub-photo g-fantasy" onclick="goTo('detail')">🐉<div class="sub-photo-badge">✦</div></div>
-        <div class="sub-photo g-portrait" onclick="goTo('detail')">👁️</div>
-        <div class="sub-photo" style="background:linear-gradient(150deg,#1a1a00,#0a0a1a)" onclick="goTo('detail')">⚡<div class="sub-photo-badge">✦</div></div>
-        <div class="sub-photo" style="background:linear-gradient(150deg,#001a1a,#0a0a1a)" onclick="goTo('detail')">🌊</div>
-        <div class="sub-photo g-cinema" onclick="goTo('detail')">🌙<div class="sub-photo-badge">✦</div></div>
-        <div class="sub-photo g-abstract" onclick="goTo('detail')">💫</div>
-        <div class="sub-photo" style="background:linear-gradient(150deg,#1a0010,#0a0a1a)" onclick="goTo('detail')">🦋<div class="sub-photo-badge">✦</div></div>
-        <div class="sub-photo g-nature" onclick="goTo('detail')">🍄</div>
-        <div class="sub-photo g-portrait" onclick="goTo('detail')">🔮<div class="sub-photo-badge">✦</div></div>
-        <div class="sub-photo g-dark" onclick="goTo('detail')">🌑</div>
-        <div class="sub-photo g-myth" onclick="goTo('detail')">🦅<div class="sub-photo-badge">✦</div></div>
-        <div class="sub-photo g-fantasy" onclick="goTo('detail')">🗡️</div>
-      </div>
-      <div style="height:10px"></div>
-    </div>
-
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="goTo('home')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="nav-label">Home</span></div>
-      <div class="nav-item active" onclick="goTo('categories')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="2" stroke="#c9a84c" stroke-width="1.5"/></svg></div><span class="nav-label" style="color:var(--gold)">Discover</span></div>
-      <div class="nav-item" onclick="goTo('favorites')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="nav-label">Saved</span></div>
-      <div class="nav-item" onclick="goTo('profile')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5"/><path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="nav-label">Profile</span></div>
-    </div>
-  </div>
-
-  <!-- ════════════ SCREEN: PHOTO DETAIL ════════════ -->
-  <div class="screen" id="screen-detail">
-    <div class="scroll-content" style="padding-bottom:80px">
-      <div class="photo-full-wrap">
-        <div class="photo-full g-fantasy">🐉</div>
-        <div class="photo-gradient"></div>
-        <div class="photo-top-actions">
-          <div class="photo-back-btn" onclick="goBack()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 19L8 12L15 5" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="photo-side-actions">
-            <div class="photo-action-btn loved" id="heart-btn" onclick="toggleHeart()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="#e84393"><path d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z" stroke="#e84393" stroke-width="1.5"/></svg>
-            </div>
-            <div class="photo-action-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8.59 13.51L15.42 17.49M15.41 6.51L8.59 10.49M21 5C21 6.7 19.7 8 18 8C16.3 8 15 6.7 15 5C15 3.3 16.3 2 18 2C19.7 2 21 3.3 21 5ZM9 12C9 13.7 7.7 15 6 15C4.3 15 3 13.7 3 12C3 10.3 4.3 9 6 9C7.7 9 9 10.3 9 12ZM21 19C21 20.7 19.7 22 18 22C16.3 22 15 20.7 15 19C15 17.3 16.3 16 18 16C19.7 16 21 17.3 21 19Z" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="photo-info">
-          <div class="photo-cat-tag">Fantasy · Dark</div>
-          <div class="photo-name">Ancient Dragon</div>
-          <div class="photo-by">Royal Collection · Vol. III</div>
-        </div>
-      </div>
-
-      <div class="prompt-panel">
-        <div class="prompt-panel-header">
-          <div class="prompt-label">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#c9a84c"/></svg>
-            AI Prompt
-          </div>
-          <button class="prompt-inline-copy" onclick="copyPrompt(this)">Copy ✦</button>
-        </div>
-        <div class="prompt-text">
-          "A majestic ancient dragon perched atop a storm-swept mountain, scales shimmering with deep violet and gold iridescence, dramatic cinematic lighting, volumetric god rays, 8K ultra-detailed, hyperrealistic fantasy art style, masterpiece quality..."
-        </div>
-        <div class="prompt-tools">
-          <div class="ptool">Midjourney v6</div>
-          <div class="ptool">DALL-E 3</div>
-          <div class="ptool">Stable Diff</div>
-        </div>
-      </div>
-
-      <div class="detail-actions">
-        <button class="btn-primary" style="flex:1;text-align:center" onclick="copyPrompt(this)">✦ Copy Prompt</button>
-        <button class="btn-ghost" style="flex:1;text-align:center">Use Now →</button>
-      </div>
-
-      <div class="detail-stats">
-        <span class="detail-saves">1,248 saves · 4.9 ★ · Fantasy</span>
-        <span class="detail-share">Share →</span>
-      </div>
-
-      <!-- Related -->
-      <div class="section-head" style="margin-top:8px">
-        <span class="section-title">Related Prompts</span>
-      </div>
-      <div class="h-scroll" style="padding-bottom:6px">
-        <div class="trend-card" onclick="goTo('detail')">
-          <div class="trend-bg g-myth">🦅</div>
-          <div class="trend-overlay"><div class="trend-tag">Mythical</div><div class="trend-name">Storm Eagle</div></div>
-        </div>
-        <div class="trend-card" onclick="goTo('detail')">
-          <div class="trend-bg g-portrait">🌙</div>
-          <div class="trend-overlay"><div class="trend-tag">Dark</div><div class="trend-name">Night Witch</div></div>
-        </div>
-        <div class="trend-card" onclick="goTo('detail')">
-          <div class="trend-bg g-abstract">💫</div>
-          <div class="trend-overlay"><div class="trend-tag">Celestial</div><div class="trend-name">Void Spiral</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="goTo('home')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="nav-label">Home</span></div>
-      <div class="nav-item" onclick="goTo('categories')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/></svg></div><span class="nav-label">Discover</span></div>
-      <div class="nav-item" onclick="goTo('favorites')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="nav-label">Saved</span></div>
-      <div class="nav-item" onclick="goTo('profile')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5"/><path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="nav-label">Profile</span></div>
-    </div>
-  </div>
-
-  <!-- ════════════ SCREEN: FAVORITES ════════════ -->
-  <div class="screen" id="screen-favorites">
-    <div class="status-bar"><span>9:41</span><div class="status-right"><span>●●</span></div></div>
-
-    <div class="scroll-content">
-      <div class="fav-header">
-        <div>
-          <div class="fav-title">My <span>Vault</span></div>
-          <div style="font-size:11px;color:var(--ivory-muted);margin-top:2px;letter-spacing:0.04em">Your saved prompts</div>
-        </div>
-        <div class="gold-badge">♥ 24 saved</div>
-      </div>
-
-      <div class="filter-chips">
-        <button class="fchip active" onclick="setFilter(this)">All</button>
-        <button class="fchip" onclick="setFilter(this)">Fantasy</button>
-        <button class="fchip" onclick="setFilter(this)">Portrait</button>
-        <button class="fchip" onclick="setFilter(this)">Abstract</button>
-        <button class="fchip" onclick="setFilter(this)">Nature</button>
-      </div>
-
-      <div class="fav-masonry">
-        <div class="fav-col">
-          <div class="fav-card" onclick="goTo('detail')">
-            <div class="fav-card-img fav-img-tall g-fantasy"><span>🐉</span><div class="fav-heart-badge">♥</div></div>
-            <div class="fav-card-body">
-              <div class="fav-card-name">Ancient Dragon</div>
-              <div class="fav-preview">"Majestic dragon perched on storm-swept mountain, violet and gold scales..."</div>
-              <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-            </div>
-          </div>
-          <div class="fav-card" onclick="goTo('detail')">
-            <div class="fav-card-img fav-img-short g-abstract"><span>🌀</span><div class="fav-heart-badge">♥</div></div>
-            <div class="fav-card-body">
-              <div class="fav-card-name">Void Spiral</div>
-              <div class="fav-preview">"Cosmic vortex with luminous neon tendrils..."</div>
-              <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-            </div>
-          </div>
-          <div class="fav-card" onclick="goTo('detail')">
-            <div class="fav-card-img fav-img-short g-nature"><span>🌿</span><div class="fav-heart-badge">♥</div></div>
-            <div class="fav-card-body">
-              <div class="fav-card-name">Mystic Grove</div>
-              <div class="fav-preview">"Ancient forest lit by bioluminescent flora..."</div>
-              <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-            </div>
-          </div>
-        </div>
-        <div class="fav-col">
-          <div class="fav-card" onclick="goTo('detail')">
-            <div class="fav-card-img fav-img-short g-portrait"><span>🎨</span><div class="fav-heart-badge">♥</div></div>
-            <div class="fav-card-body">
-              <div class="fav-card-name">Dark Empress</div>
-              <div class="fav-preview">"Regal portrait, obsidian crown, piercing violet gaze..."</div>
-              <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-            </div>
-          </div>
-          <div class="fav-card" onclick="goTo('detail')">
-            <div class="fav-card-img fav-img-tall g-dark"><span>🌌</span><div class="fav-heart-badge">♥</div></div>
-            <div class="fav-card-body">
-              <div class="fav-card-name">Star Requiem</div>
-              <div class="fav-preview">"Dying star collapsing into galactic nebula storm, supernova light..."</div>
-              <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-            </div>
-          </div>
-          <div class="fav-card" onclick="goTo('detail')">
-            <div class="fav-card-img fav-img-short g-myth"><span>🔮</span><div class="fav-heart-badge">♥</div></div>
-            <div class="fav-card-body">
-              <div class="fav-card-name">Oracle Vision</div>
-              <div class="fav-preview">"Ancient seer surrounded by prophetic crystal spheres..."</div>
-              <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="height:10px"></div>
-    </div>
-
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="goTo('home')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="nav-label">Home</span></div>
-      <div class="nav-item" onclick="goTo('categories')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/></svg></div><span class="nav-label">Discover</span></div>
-      <div class="nav-item active" onclick="goTo('favorites')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z" fill="#e84393" stroke="#e84393" stroke-width="1.5"/></svg></div><span class="nav-label" style="color:var(--gold)">Saved</span></div>
-      <div class="nav-item" onclick="goTo('profile')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#6a6080" stroke-width="1.5"/><path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="nav-label">Profile</span></div>
-    </div>
-  </div>
-
-  <!-- ════════════ SCREEN: PROFILE ════════════ -->
-  <div class="screen" id="screen-profile">
-    <div class="status-bar" style="position:relative;z-index:2"><span>9:41</span><div class="status-right"><span>●●</span></div></div>
-
-    <div class="scroll-content" style="padding-top:0">
-      <div class="profile-hero">
-        <div class="profile-ring1"></div>
-        <div class="profile-ring2"></div>
-        <div class="avatar">A</div>
-        <div class="profile-info">
-          <div class="profile-name">Aryan Shah</div>
-          <div class="profile-tier">★ Royal Member</div>
-        </div>
-        <div class="edit-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M11 4H4C3.4 4 3 4.4 3 5V20C3 20.6 3.4 21 4 21H19C19.6 21 20 20.6 20 20V13M18.5 2.5C19.3 1.7 20.7 1.7 21.5 2.5C22.3 3.3 22.3 4.7 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </div>
-
-      <div class="profile-stats">
-        <div class="stat-cell">
-          <div class="stat-num">247</div>
-          <div class="stat-lbl">Used</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-num">24</div>
-          <div class="stat-lbl">Saved</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-num">12</div>
-          <div class="stat-lbl">Shared</div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <div class="settings-section-label">Preferences</div>
-        <div class="settings-group">
-          <div class="setting-row">
-            <div class="setting-icon si-gold">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="setting-text">
-              <div class="setting-name">Dark Theme</div>
-              <div class="setting-desc">Royal obsidian mode active</div>
-            </div>
-            <div class="toggle"><div class="toggle-knob"></div></div>
-          </div>
-          <div class="setting-row">
-            <div class="setting-icon si-gold">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="setting-text">
-              <div class="setting-name">Notifications</div>
-              <div class="setting-desc">New drops & trending alerts</div>
-            </div>
-            <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-        </div>
-
-        <div class="settings-section-label">Account</div>
-        <div class="settings-group">
-          <div class="setting-row" onclick="goTo('favorites')">
-            <div class="setting-icon si-violet">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="setting-text">
-              <div class="setting-name">Saved Prompts</div>
-              <div class="setting-desc">24 prompts in your vault</div>
-            </div>
-            <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <div class="setting-row">
-            <div class="setting-icon si-gold">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#c9a84c" stroke-width="1.5" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="setting-text">
-              <div class="setting-name">Royal Membership</div>
-              <div class="setting-desc">Premium · Renews May 2026</div>
-            </div>
-            <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <div class="setting-row">
-            <div class="setting-icon si-violet">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="#a78bfa" stroke-width="1.5"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div class="setting-text">
-              <div class="setting-name">Account Settings</div>
-              <div class="setting-desc">Privacy, data & security</div>
-            </div>
-            <svg class="setting-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="#6a6080" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <div class="setting-row" style="border-color:rgba(220,38,38,0.2)">
-            <div class="setting-icon si-danger">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="setting-text">
-              <div class="setting-name" style="color:#f87171">Sign Out</div>
-              <div class="setting-desc">End current session</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="goTo('home')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12V20C21 20.6 20.6 21 20 21H15V16H9V21H4C3.4 21 3 20.6 3 20V12Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="nav-label">Home</span></div>
-      <div class="nav-item" onclick="goTo('categories')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="2" stroke="#6a6080" stroke-width="1.5"/></svg></div><span class="nav-label">Discover</span></div>
-      <div class="nav-item" onclick="goTo('favorites')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 3 15 3 8.5C3 5.4 5.4 3 8.5 3C10.2 3 11.7 3.8 12 4.5C12.3 3.8 13.8 3 15.5 3C18.6 3 21 5.4 21 8.5C21 15 12 21 12 21Z" stroke="#6a6080" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="nav-label">Saved</span></div>
-      <div class="nav-item active" onclick="goTo('profile')"><div class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#c9a84c" stroke-width="1.5"/><path d="M4 20C4 17 7.6 14.5 12 14.5C16.4 14.5 20 17 20 20" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="nav-label" style="color:var(--gold)">Profile</span></div>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div class="toast" id="toast">✦ Prompt copied to clipboard</div>
-
-</div>
-
-<script>
-  let currentScreen = 'home';
-  let screenHistory = [];
-
-  const screens = ['home','categories','subcategory','detail','favorites','profile'];
-
-  function goTo(id) {
-    if (id === currentScreen) return;
-    const current = document.getElementById('screen-' + currentScreen);
-    const next = document.getElementById('screen-' + id);
-    if (!next) return;
-
-    screenHistory.push(currentScreen);
-    current.classList.remove('active');
-    current.classList.add('prev');
-    next.style.transform = 'translateX(30px)';
-    next.style.opacity = '0';
-    next.classList.add('active');
-
-    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        next.style.transform = '';
-        next.style.opacity = '';
-        setTimeout(() => {
-          current.classList.remove('prev');
-          // Reset scroll
-          const sc = next.querySelector('.scroll-content');
-          if (sc) sc.scrollTop = 0;
-        }, 350);
+        requestAnimationFrame(() => {
+          next.style.transform = '';
+          next.style.opacity = '';
+          setTimeout(() => {
+            current.classList.remove('prev');
+            // Reset scroll
+            const sc = next.querySelector('.scroll-content');
+            if (sc) sc.scrollTop = 0;
+          }, 350);
+        });
+      });
+      currentScreen = id;
+    }
+
+    function goBack() {
+      if (screenHistory.length === 0) return;
+      const prev = screenHistory.pop();
+      const current = document.getElementById('screen-' + currentScreen);
+      const back = document.getElementById('screen-' + prev);
+
+      current.classList.remove('active');
+      back.style.transform = 'translateX(-30px)';
+      back.style.opacity = '0';
+      back.classList.add('active');
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          back.style.transform = '';
+          back.style.opacity = '';
+          setTimeout(() => { }, 350);
+        });
+      });
+      currentScreen = prev;
+    }
+
+    function copyPrompt(btn) {
+      const prompts = [
+        "A majestic ancient dragon perched atop a storm-swept mountain, scales shimmering with deep violet and gold iridescence, dramatic cinematic lighting, 8K ultra-detailed, hyperrealistic fantasy art...",
+        "A luminous celestial empress seated on a throne of crystallized starlight, robes woven from galaxy fabric, ultra-detailed portrait, dramatic lighting, Midjourney v6...",
+        "Ethereal forest spirit emerging from ancient oak tree, bioluminescent particles, volumetric fog, hyperrealistic, 8K, fantasy masterpiece...",
+      ];
+      const prompt = prompts[Math.floor(Math.random() * prompts.length)];
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(prompt).catch(() => { });
+      }
+      showToast();
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function toggleHeart() {
+      const btn = document.getElementById('heart-btn');
+      btn.classList.toggle('loved');
+      const svg = btn.querySelector('path');
+      if (btn.classList.contains('loved')) {
+        svg.setAttribute('fill', '#e84393');
+        svg.setAttribute('stroke', '#e84393');
+      } else {
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', '#c9a84c');
+      }
+    }
+
+    function setFilter(el) {
+      const parent = el.closest('.filter-chips');
+      parent.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // Animate nav tap
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', function () {
+        this.style.transform = 'scale(0.88)';
+        setTimeout(() => this.style.transform = '', 150);
       });
     });
-    currentScreen = id;
-  }
-
-  function goBack() {
-    if (screenHistory.length === 0) return;
-    const prev = screenHistory.pop();
-    const current = document.getElementById('screen-' + currentScreen);
-    const back = document.getElementById('screen-' + prev);
-
-    current.classList.remove('active');
-    back.style.transform = 'translateX(-30px)';
-    back.style.opacity = '0';
-    back.classList.add('active');
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        back.style.transform = '';
-        back.style.opacity = '';
-        setTimeout(() => { }, 350);
-      });
-    });
-    currentScreen = prev;
-  }
-
-  function copyPrompt(btn) {
-    const prompts = [
-      "A majestic ancient dragon perched atop a storm-swept mountain, scales shimmering with deep violet and gold iridescence, dramatic cinematic lighting, 8K ultra-detailed, hyperrealistic fantasy art...",
-      "A luminous celestial empress seated on a throne of crystallized starlight, robes woven from galaxy fabric, ultra-detailed portrait, dramatic lighting, Midjourney v6...",
-      "Ethereal forest spirit emerging from ancient oak tree, bioluminescent particles, volumetric fog, hyperrealistic, 8K, fantasy masterpiece...",
-    ];
-    const prompt = prompts[Math.floor(Math.random() * prompts.length)];
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(prompt).catch(() => {});
-    }
-    showToast();
-  }
-
-  function showToast() {
-    const toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-  }
-
-  function toggleHeart() {
-    const btn = document.getElementById('heart-btn');
-    btn.classList.toggle('loved');
-    const svg = btn.querySelector('path');
-    if (btn.classList.contains('loved')) {
-      svg.setAttribute('fill', '#e84393');
-      svg.setAttribute('stroke', '#e84393');
-    } else {
-      svg.setAttribute('fill', 'none');
-      svg.setAttribute('stroke', '#c9a84c');
-    }
-  }
-
-  function setFilter(el) {
-    const parent = el.closest('.filter-chips');
-    parent.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-  }
-
-  // Animate nav tap
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', function() {
-      this.style.transform = 'scale(0.88)';
-      setTimeout(() => this.style.transform = '', 150);
-    });
-  });
-</script>
+  </script>
 </body>
+
 </html>
