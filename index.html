@@ -719,6 +719,11 @@
       overflow: hidden;
     }
 
+    .sub-grid .cat-card-img {
+      height: 140px;
+      font-size: 52px;
+    }
+
     .cat-card-shimmer {
       position: absolute;
       inset: 0;
@@ -848,18 +853,19 @@
 
     .sub-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      padding: 0 20px;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      padding: 0 10px;
     }
 
     .sub-photo {
-      aspect-ratio: 1;
+      height: 1400px;
+      width: 100%;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 300px;
       border: 1px solid var(--surface-border);
       background: var(--surface);
       cursor: pointer;
@@ -1153,14 +1159,10 @@
       align-items: start;
     }
 
-    .fav-col {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .fav-col:last-child {
-      margin-top: 28px;
+    .fav-masonry .cat-card-img {
+      height: 140px;
+      width: 100%;
+      font-size: 52px;
     }
 
     .fav-card {
@@ -1433,6 +1435,181 @@
       border-color: var(--primary);
     }
 
+    /* ══════════════════════ GENERATION FLOW ══════════════════════ */
+    .gen-container {
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+    }
+
+    .upload-zone {
+      width: 100%;
+      max-width: 280px;
+      aspect-ratio: 1;
+      border: 2px dashed var(--border-gold-mid);
+      border-radius: 24px;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .upload-zone:active {
+      transform: scale(0.98);
+      border-color: var(--primary);
+      background: var(--primary-glow);
+    }
+
+    .upload-zone svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+      stroke: var(--primary);
+    }
+
+    .gen-result-img {
+      width: 100%;
+      border-radius: 24px;
+      border: 1px solid var(--border-gold-mid);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      margin-bottom: 24px;
+    }
+
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 8, 16, 0.95);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(10px);
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--border-gold-mid);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .glimmer-text {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--gold-glow);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .v-center-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 120px);
+    }
+
+    .edit-toolbar {
+      display: flex;
+      gap: 12px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: var(--surface);
+      border-top: 1px solid var(--border-gold-mid);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .edit-toolbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .edit-tool {
+      flex-shrink: 0;
+      width: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .edit-tool-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--surface2);
+      border: 1px solid var(--border-gold-mid);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .edit-tool:active .edit-tool-icon {
+      transform: scale(0.9);
+      border-color: var(--primary);
+      background: var(--primary-glow);
+    }
+
+    .edit-tool-label {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--ivory-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-minimal {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 4px;
+      position: relative;
+    }
+
+    .header-minimal .header-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      pointer-events: none;
+    }
+
     .setting-icon {
       width: 32px;
       height: 32px;
@@ -1688,6 +1865,83 @@
       min-height: 120px;
       resize: none;
       line-height: 1.6;
+    }
+
+    /* Custom Dropdown Styles */
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-select.compact {
+      width: 160px;
+    }
+
+    .custom-select-trigger {
+      background: #111111;
+      border: 1.5px solid #262626;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.3s;
+      user-select: none;
+    }
+
+    .custom-select.active .custom-select-trigger {
+      border-color: var(--primary);
+    }
+
+    .custom-options {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #111111;
+      border: 1.5px solid #262626;
+      border-radius: 12px;
+      z-index: 1000;
+      max-height: 120px;
+      /* ~3 items */
+      overflow-y: auto;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .custom-select.active .custom-options {
+      display: block;
+    }
+
+    .custom-option {
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .custom-option:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    .custom-option.selected {
+      color: var(--primary);
+      background: var(--primary-glow);
+    }
+
+    .select-arrow {
+      color: var(--primary);
+      font-size: 14px;
+      transition: transform 0.3s;
+    }
+
+    .custom-select.active .select-arrow {
+      transform: rotate(180deg);
     }
 
     .category-chips-form {
@@ -2515,46 +2769,65 @@
         <div class="gold-badge">★ Top Collection</div>
       </div>
 
-      <div class="scroll-content" style="padding-top:0">
-        <div class="sub-banner g-fantasy" onclick="goTo('subcategory')">
-          <div class="sub-banner-emoji">✨</div>
-          <div class="sub-banner-overlay"></div>
-          <div class="sub-banner-chips">
-            <div class="sub-chip active">All</div>
-            <div class="sub-chip">Dark</div>
-            <div class="sub-chip">Mythical</div>
-            <div class="sub-chip">Celestial</div>
-            <div class="sub-chip">Elemental</div>
+      <div class="scroll-content">
+        <div class="search-bar" style="margin-top:10px;">
+          <svg class="search-svg" width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="#94a3b8" stroke-width="1.5" />
+            <path d="M21 21L16.7 16.7" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <input type="text" placeholder="Search in Fantasy...">
+          <div class="filter-pill">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+              <path d="M3 6H21M6 12H18M9 18H15" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            Filter
           </div>
         </div>
 
+        <div class="filter-chips">
+          <button class="fchip active" onclick="setFilter(this)">All</button>
+          <button class="fchip" onclick="setFilter(this)">Dark</button>
+          <button class="fchip" onclick="setFilter(this)">Mythical</button>
+          <button class="fchip" onclick="setFilter(this)">Celestial</button>
+          <button class="fchip" onclick="setFilter(this)">Elemental</button>
+        </div>
+
         <div class="sub-meta">
-          <span class="sub-count">Showing 12 of 48</span>
+          <span class="sub-count">Showing 12 of 48 results</span>
           <button class="sub-sort">Sort ↕</button>
         </div>
 
         <div class="sub-grid">
-          <div class="sub-photo g-fantasy" onclick="goTo('detail')">🐉<div class="sub-photo-badge">✦</div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-fantasy">
+              <div class="cat-card-shimmer"></div>🐉
+            </div>
           </div>
-          <div class="sub-photo g-portrait" onclick="goTo('detail')">👁️</div>
-          <div class="sub-photo" style="background:linear-gradient(150deg,#1a1a00,#0a0a1a)" onclick="goTo('detail')">⚡
-            <div class="sub-photo-badge">✦</div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-portrait">
+              <div class="cat-card-shimmer"></div>👁️
+            </div>
           </div>
-          <div class="sub-photo" style="background:linear-gradient(150deg,#001a1a,#0a0a1a)" onclick="goTo('detail')">🌊
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-fantasy">
+              <div class="cat-card-shimmer"></div>⚡
+            </div>
           </div>
-          <div class="sub-photo g-cinema" onclick="goTo('detail')">🌙<div class="sub-photo-badge">✦</div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-sci">
+              <div class="cat-card-shimmer"></div>🌊
+            </div>
           </div>
-          <div class="sub-photo g-abstract" onclick="goTo('detail')">💫</div>
-          <div class="sub-photo" style="background:linear-gradient(150deg,#1a0010,#0a0a1a)" onclick="goTo('detail')">🦋
-            <div class="sub-photo-badge">✦</div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-cinema">
+              <div class="cat-card-shimmer"></div>🌙
+            </div>
           </div>
-          <div class="sub-photo g-nature" onclick="goTo('detail')">🍄</div>
-          <div class="sub-photo g-portrait" onclick="goTo('detail')">🔮<div class="sub-photo-badge">✦</div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-abstract">
+              <div class="cat-card-shimmer"></div>✨
+            </div>
           </div>
-          <div class="sub-photo g-dark" onclick="goTo('detail')">🌑</div>
-          <div class="sub-photo g-myth" onclick="goTo('detail')">🦅<div class="sub-photo-badge">✦</div>
-          </div>
-          <div class="sub-photo g-fantasy" onclick="goTo('detail')">🗡️</div>
         </div>
         <div style="height:10px"></div>
       </div>
@@ -2654,7 +2927,7 @@
 
         <div class="detail-actions">
           <button class="btn-primary" style="flex:1;text-align:center" onclick="copyPrompt(this)">✦ Copy Prompt</button>
-          <button class="btn-ghost" style="flex:1;text-align:center">Use Now →</button>
+          <button class="btn-ghost" style="flex:1;text-align:center" onclick="goTo('gen-upload')">Use Now →</button>
         </div>
 
         <div class="detail-stats">
@@ -2748,69 +3021,40 @@
         </div>
 
         <div class="fav-masonry">
-          <div class="fav-col">
-            <div class="fav-card" onclick="goTo('detail')">
-              <div class="fav-card-img fav-img-tall g-fantasy"><span>🐉</span>
-                <div class="fav-heart-badge">♥</div>
-              </div>
-              <div class="fav-card-body">
-                <div class="fav-card-name">Ancient Dragon</div>
-                <div class="fav-preview">"Majestic dragon perched on storm-swept mountain, violet and gold scales..."
-                </div>
-                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-              </div>
-            </div>
-            <div class="fav-card" onclick="goTo('detail')">
-              <div class="fav-card-img fav-img-short g-abstract"><span>🌀</span>
-                <div class="fav-heart-badge">♥</div>
-              </div>
-              <div class="fav-card-body">
-                <div class="fav-card-name">Void Spiral</div>
-                <div class="fav-preview">"Cosmic vortex with luminous neon tendrils..."</div>
-                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-              </div>
-            </div>
-            <div class="fav-card" onclick="goTo('detail')">
-              <div class="fav-card-img fav-img-short g-nature"><span>🌿</span>
-                <div class="fav-heart-badge">♥</div>
-              </div>
-              <div class="fav-card-body">
-                <div class="fav-card-name">Mystic Grove</div>
-                <div class="fav-preview">"Ancient forest lit by bioluminescent flora..."</div>
-                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-              </div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-fantasy">
+              <div class="cat-card-shimmer"></div>🐉
+              <div class="fav-heart-badge">♥</div>
             </div>
           </div>
-          <div class="fav-col">
-            <div class="fav-card" onclick="goTo('detail')">
-              <div class="fav-card-img fav-img-short g-portrait"><span>🎨</span>
-                <div class="fav-heart-badge">♥</div>
-              </div>
-              <div class="fav-card-body">
-                <div class="fav-card-name">Dark Empress</div>
-                <div class="fav-preview">"Regal portrait, obsidian crown, piercing violet gaze..."</div>
-                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-              </div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-portrait">
+              <div class="cat-card-shimmer"></div>🎨
+              <div class="fav-heart-badge">♥</div>
             </div>
-            <div class="fav-card" onclick="goTo('detail')">
-              <div class="fav-card-img fav-img-tall g-dark"><span>🌌</span>
-                <div class="fav-heart-badge">♥</div>
-              </div>
-              <div class="fav-card-body">
-                <div class="fav-card-name">Star Requiem</div>
-                <div class="fav-preview">"Dying star collapsing into galactic nebula storm, supernova light..."</div>
-                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-              </div>
+          </div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-abstract">
+              <div class="cat-card-shimmer"></div>🌀
+              <div class="fav-heart-badge">♥</div>
             </div>
-            <div class="fav-card" onclick="goTo('detail')">
-              <div class="fav-card-img fav-img-short g-myth"><span>🔮</span>
-                <div class="fav-heart-badge">♥</div>
-              </div>
-              <div class="fav-card-body">
-                <div class="fav-card-name">Oracle Vision</div>
-                <div class="fav-preview">"Ancient seer surrounded by prophetic crystal spheres..."</div>
-                <div class="fav-copy-pill" onclick="event.stopPropagation();copyPrompt(this)">✦ Copy</div>
-              </div>
+          </div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-dark">
+              <div class="cat-card-shimmer"></div>🌌
+              <div class="fav-heart-badge">♥</div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-nature">
+              <div class="cat-card-shimmer"></div>🌿
+              <div class="fav-heart-badge">♥</div>
+            </div>
+          </div>
+          <div class="cat-card" onclick="goTo('detail')">
+            <div class="cat-card-img g-myth">
+              <div class="cat-card-shimmer"></div>🔮
+              <div class="fav-heart-badge">♥</div>
             </div>
           </div>
         </div>
@@ -3022,6 +3266,135 @@
       </div>
     </div>
 
+    <!-- ════════════ SCREEN: GENERATION UPLOAD ════════════ -->
+    <div class="screen" id="screen-gen-upload">
+      <div class="header-minimal">
+        <button class="back-btn" onclick="goTo('detail')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <div class="header-title">AI Generator</div>
+      </div>
+
+      <div class="scroll-content gen-container">
+        <div style="margin-bottom: 30px;">
+          <h2 style="font-family: var(--font-display); color: var(--text-primary); margin-bottom: 8px;">Creative Source
+          </h2>
+          <p style="font-size: 13px; color: var(--ivory-muted);">Upload a reference photo to begin the transformation
+          </p>
+        </div>
+
+        <div class="upload-zone" onclick="document.getElementById('gen-file').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+          </svg>
+          <span style="color: var(--primary); font-weight: 600; font-size: 14px;">Choose Photo</span>
+          <span style="color: var(--text-muted); font-size: 11px; margin-top: 4px;">JPG, PNG or WEBP</span>
+          <input type="file" id="gen-file" hidden>
+        </div>
+
+        <button class="btn-primary" style="margin-top: 40px; width: 200px; padding: 16px;" onclick="startGeneration()">
+          ✦ Generate Now
+        </button>
+      </div>
+    </div>
+
+    <!-- ════════════ SCREEN: GENERATION RESULT ════════════ -->
+    <div class="screen" id="screen-gen-result">
+      <div class="header-minimal">
+        <button class="back-btn" onclick="goTo('gen-upload')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <div class="header-title">Generated Result</div>
+        <button class="back-btn" onclick="goTo('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="scroll-content" style="padding: 24px;">
+        <div class="v-center-container">
+          <div class="gen-result-img"
+            style="background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 80px; min-height: 350px;">
+            🎨
+          </div>
+
+          <div style="text-align: center;">
+            <h3 style="font-family: var(--font-display); color: var(--gold-glow); margin-bottom: 8px;">Success!</h3>
+            <p style="font-size: 12px; color: var(--ivory-muted); margin-bottom: 30px;">Your AI result is ready for the
+              world</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <button class="btn-primary" style="grid-column: span 2;" onclick="goTo('gen-edit')">✦ Edit
+                Masterpiece</button>
+              <button class="btn-ghost" onclick="showToast('Exporting...')">Export</button>
+              <button class="btn-ghost" onclick="showToast('Shared successfully!')">Share</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ SCREEN: GENERATION EDIT ════════════ -->
+    <div class="screen" id="screen-gen-edit">
+      <div class="header-minimal">
+        <button class="back-btn" onclick="goTo('gen-result')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <div class="header-title">Edit Masterpiece</div>
+        <button
+          style="background:none; border:none; color:var(--primary); font-weight:700; font-size:13px; padding:0 20px;"
+          onclick="goTo('gen-result')">SAVE</button>
+      </div>
+
+      <div class="scroll-content" style="padding: 24px;">
+        <div class="v-center-container" style="padding-bottom: 80px;">
+          <div class="gen-result-img"
+            style="background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 80px; min-height: 350px; border-style: solid; border-width: 1px;">
+            🎨
+          </div>
+        </div>
+      </div>
+
+      <div class="edit-toolbar">
+        <div class="edit-tool" onclick="showToast('Filter applied')">
+          <div class="edit-tool-icon">🍷</div>
+          <div class="edit-tool-label">Ruby</div>
+        </div>
+        <div class="edit-tool" onclick="showToast('Filter applied')">
+          <div class="edit-tool-icon">🌑</div>
+          <div class="edit-tool-label">Noir</div>
+        </div>
+        <div class="edit-tool" onclick="showToast('Exposure adjusted')">
+          <div class="edit-tool-icon">☀️</div>
+          <div class="edit-tool-label">Light</div>
+        </div>
+        <div class="edit-tool" onclick="showToast('Saturation adjusted')">
+          <div class="edit-tool-icon">🌈</div>
+          <div class="edit-tool-label">Vivid</div>
+        </div>
+        <div class="edit-tool" onclick="showToast('Sharpening applied')">
+          <div class="edit-tool-icon">✨</div>
+          <div class="edit-tool-label">Glow</div>
+        </div>
+        <div class="edit-tool" onclick="showToast('Cropped')">
+          <div class="edit-tool-icon">✂️</div>
+          <div class="edit-tool-label">Crop</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <div class="glimmer-text">Processing Reality...</div>
+    </div>
+
     <!-- ════════════ POPUP: PREMIUM PLANS ════════════ -->
     <div class="popup-overlay" id="popup-premium">
       <div class="close-circle" onclick="togglePremiumPopup(false)" style="top:20px; right:20px;">
@@ -3096,14 +3469,14 @@
         <div class="status-right"><span>●●</span></div>
       </div>
 
+      <div class="close-circle" onclick="goBack()" style="top:20px; right:20px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:18px;height:18px;">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+
       <div class="scroll-content">
         <div class="page-header" style="display:flex; align-items:center; gap:16px; padding: 20px 24px;">
-          <div class="back-btn" onclick="goBack()" style="position:static;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M15 19L8 12L15 5" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-          </div>
           <h2 style="color:white; font-size:20px; font-weight:700;">Post Prompt</h2>
         </div>
 
@@ -3122,17 +3495,6 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Category</label>
-            <div class="category-chips-form">
-              <div class="fchip-form active" onclick="this.classList.toggle('active')">Portrait</div>
-              <div class="fchip-form" onclick="this.classList.toggle('active')">Fantasy</div>
-              <div class="fchip-form" onclick="this.classList.toggle('active')">Arch</div>
-              <div class="fchip-form" onclick="this.classList.toggle('active')">Nature</div>
-              <div class="fchip-form" onclick="this.classList.toggle('active')">Cinema</div>
-            </div>
-          </div>
-
-          <div class="form-group">
             <label class="form-label">Title</label>
             <input type="text" class="form-input" placeholder="Give your masterpiece a name...">
           </div>
@@ -3143,9 +3505,25 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">AI Model</label>
-            <input type="text" class="form-input" placeholder="e.g. Midjourney v6, DALL-E 3...">
+            <label class="form-label">Category</label>
+            <div class="custom-select compact">
+              <div class="custom-select-trigger" onclick="toggleCustomSelect(this)">
+                <span class="selected-text">Portrait</span>
+                <span class="select-arrow">▾</span>
+              </div>
+              <div class="custom-options">
+                <div class="custom-option selected" onclick="selectOption(this, 'portrait')">Portrait</div>
+                <div class="custom-option" onclick="selectOption(this, 'fantasy')">Fantasy</div>
+                <div class="custom-option" onclick="selectOption(this, 'arch')">Arch</div>
+                <div class="custom-option" onclick="selectOption(this, 'nature')">Nature</div>
+                <div class="custom-option" onclick="selectOption(this, 'cinema')">Cinema</div>
+                <div class="custom-option" onclick="selectOption(this, 'myth')">Mythology</div>
+                <div class="custom-option" onclick="selectOption(this, 'other')">Other</div>
+              </div>
+            </div>
           </div>
+
+
 
           <button class="upload-submit-btn" onclick="showToast('Submitted successfully! ✦'); goBack();">Submit
             Prompt</button>
@@ -3249,6 +3627,17 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
+    function startGeneration() {
+      const overlay = document.getElementById('loading-overlay');
+      overlay.style.display = 'flex';
+
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        goTo('gen-result');
+        showToast('Generation complete!');
+      }, 3000);
+    }
+
     function toggleHeart() {
       const btn = document.getElementById('heart-btn');
       btn.classList.toggle('loved');
@@ -3274,6 +3663,30 @@
         this.style.transform = 'scale(0.88)';
         setTimeout(() => this.style.transform = '', 150);
       });
+    });
+
+    function toggleCustomSelect(el) {
+      const parent = el.closest('.custom-select');
+      const wasActive = parent.classList.contains('active');
+      document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
+      if (!wasActive) parent.classList.add('active');
+    }
+
+    function selectOption(el, value) {
+      const parent = el.closest('.custom-select');
+      const triggerText = parent.querySelector('.selected-text');
+      triggerText.textContent = el.textContent;
+      parent.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+      el.classList.add('selected');
+      parent.classList.remove('active');
+
+      // Selection logic updated: 'Other' no longer show custom input
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
+      }
     });
   </script>
 </body>
